@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_PRISMA_URL")
+}
+
+model Profile {
+  profile_id            String    @id @default(uuid())
+  profile_auth_username String
+  profile_auth_mail     String
+  profile_auth_pass     String    @db.Text
+  profile_birth_date    DateTime  @db.Date
+  profile_avatar_url    String?
+  profile_created_at    DateTime  @default(now())
+  profile_updated_at    DateTime  @updatedAt
+  profile_provider      Providers
+
+  WorkSpace WorkSpace[]
+  Content   Content[]
+
+  @@map("profiles")
+}
+
+model WorkSpace {
+  workspace_id         String   @id @default(uuid())
+  workspace_name       String
+  workspace_created_at DateTime @default(now())
+  workspace_updated_at DateTime @updatedAt
+
+  profile_id String
+  profile    Profile   @relation(fields: [profile_id], references: [profile_id])
+  Content    Content[]
+
+  @@map("workspaces")
+}
+
+model Content {
+  content_id         String   @id @default(uuid())
+  content_prompt     String
+  content_text       String?
+  content_image      String?
+  content_created_at DateTime @default(now())
+  content_updated_at DateTime @updatedAt
+
+  profile_id String
+  profile    Profile @relation(fields: [profile_id], references: [profile_id])
+
+  workspace_id String
+  workspace    WorkSpace @relation(fields: [workspace_id], references: [workspace_id])
+
+  @@map("contents")
+}
+
+enum Providers {
+  Google
+  InstaGram
+  credentials
+}

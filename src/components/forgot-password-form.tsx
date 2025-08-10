@@ -46,13 +46,13 @@ export default function ForgptPasswordForm({ className, ...props }: ComponentPro
         <div className="flex flex-col gap-6">
           <div className="grid gap-3">
             <Label htmlFor="auth-mail">E-mail</Label>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
               <Input
                 id="auth-mail"
                 type="email"
                 placeholder="m@example.com"
                 {...register("authMail")}
-                className={clsx()}
+                className={clsx(errors.authMail && "shadow-lg shadow-red-500/50 border border-red-500 focus-visible:ring-0  drop-shadow-lg p-4 bg-white rounded-lg")}
               />
               {errors.authMail && <span className="text-sm text-destructive">{errors.authMail.message}</span>}
             </div>

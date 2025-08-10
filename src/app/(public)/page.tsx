@@ -1,3 +1,11 @@
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
+
 export default function HomePage() {
-  return <h1>hello</h1>;
+  return <NavigationMenu>
+    <NavigationMenuList>
+      <NavigationMenuItem>
+        
+      </NavigationMenuItem>
+    </NavigationMenuList>
+  </NavigationMenu>;
 }
