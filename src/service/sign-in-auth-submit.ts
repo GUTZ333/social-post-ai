@@ -1,10 +1,16 @@
 "use server";
 
+import { trpcAxios } from "@/lib/trpc-axios";
 import { typeSignInAuthSchema } from "@/schemas/sign-in-schema";
 
-async function handleSignInAuthSubmit(data: typeSignInAuthSchema) {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  console.log("Sign In Auth Data:", data);
+async function handleSignInAuthSubmit({ authMail, authPass }: typeSignInAuthSchema) {
+
+  const login = await trpcAxios.auth.signIn.mutate({
+    authMail,
+    authPass
+  })
+
+  
 }
 
 export { handleSignInAuthSubmit };
