@@ -1,4 +1,3 @@
-import { renderForgotPassword } from "@/lib/render-forgot-password";
 import { resend } from "@/lib/resend";
 import { envs } from "@/schemas/envs-schema";
 

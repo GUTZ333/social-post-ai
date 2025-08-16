@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
 
   if (isPublicRoute && isPublicRoute.whenAuthenticated === "redirect" && authToken) {
     const URI = request.nextUrl.clone();
-    URI.pathname = "/";
+    URI.pathname = "/dashboard";
     return response.redirect(URI);
   }
 

@@ -15,9 +15,13 @@ describe("Mongo DB connection.", () => {
     expect(mongoose.connection.readyState).toBe(1);
   });
 
-  test("shold fetch all features", async() => {
-    const tools = await features.find()
+  test("create a new feature", async () => {
+    await features.create({ feature_name: "GPT", feature_desc: "AI chatbot that generates human-like text responses.",feature_icon_name: "SiTrpc", feature_image_url_dark: "/images/dall-e-dark.svg", feature_image_url_light: "/images/dall-e-light.svg" })
+  })
 
+  test("shold fetch all features", async () => {
+    const tools = await features.find()
+    console.log(tools)
     expect(tools.length).toBeGreaterThan(0)
   })
 });
