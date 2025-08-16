@@ -51,10 +51,10 @@ export default function ForgptPasswordForm({ className, ...props }: ComponentPro
                 id="auth-mail"
                 type="email"
                 placeholder="m@example.com"
-                {...register("authMail")}
-                className={clsx(errors.authMail && "shadow-lg shadow-red-500/50 border border-red-500 focus-visible:ring-0  drop-shadow-lg p-4 bg-white rounded-lg")}
+                {...register("toMail")}
+                className={clsx(errors.toMail && "shadow-lg shadow-red-500/50 border border-red-500 focus-visible:ring-0  drop-shadow-lg p-4 bg-white rounded-lg")}
               />
-              {errors.authMail && <span className="text-sm text-destructive">{errors.authMail.message}</span>}
+              {errors.toMail && <span className="text-sm text-destructive">{errors.toMail.message}</span>}
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={isSubmitting}>
