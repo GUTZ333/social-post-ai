@@ -17,18 +17,46 @@ import { Controller } from "react-hook-form";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { FaGoogle, FaInstagram } from "react-icons/fa";
+import { Toaster } from "./ui/sonner";
+import { toast } from "sonner";
 
 export default function SignUpAuthForm({ className, ...props }: ComponentProps<"div">) {
 
   const [openPopover, setOpenPopover] = useState<boolean>(false);
-  const { register, formState: { errors, isSubmitting, isSubmitSuccessful }, handleSubmit, reset, control } = useFormSignUpAuth();
+  const { register, formState: { errors, isSubmitting, isSubmitSuccessful }, handleSubmit, reset, control, setError } = useFormSignUpAuth();
 
   return (
     <div className={clsx("flex flex-col gap-6", className)} {...props}>
-      <form noValidate onSubmit={handleSubmit(async (data) => {
-        await handleSignUpAuthSubmit(data);
-        if (isSubmitSuccessful) {
-          reset();
+      <form noValidate onSubmit={handleSubmit(async ({
+        authBirthDate,
+        authMail, 
+        authPass, 
+        authUsername
+      }) => {
+        const data = await handleSignUpAuthSubmit({
+          authBirthDate,
+          authMail,
+          authPass,
+          authUsername
+        })
+
+        if (!data.success) {
+          switch (data.errors.message) {
+            case "USER_ALREADY_EXISTS":
+              setError("authUsername", {
+                message: "this username already exist."
+              })
+            case "EMAIL_NOT_VERIFIED":
+              setError("authMail", {
+                message: "this e-mail not verified."
+              })
+            case "PASSWORD_TOO_WEAK":
+              setError("authPass", {
+                message: "this password is incorrect."
+              })
+            default:
+              break;
+          }
         }
       })}>
         <div className="flex flex-col gap-6">
@@ -162,6 +190,7 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
         By clicking continue, you agree to our <Link href="#">Terms of Service</Link>{" "}
         and <Link href="#">Privacy Policy</Link>.
       </div>
+      <Toaster position="top-left" />
     </div>
   )
 }

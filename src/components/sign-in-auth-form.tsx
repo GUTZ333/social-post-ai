@@ -9,19 +9,42 @@ import { FaGoogle, FaInstagram } from "react-icons/fa"
 import { handleSignInAuthSubmit } from "@/service/sign-in-auth-submit"
 import { useFormSignInAuth } from "@/hooks/use-form-sign-in-auth"
 import clsx from "clsx"
+import { toast } from "sonner";
 
 export default function SignInAuthForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
 
-  const { register, formState: { errors, isSubmitSuccessful, isSubmitting }, handleSubmit, reset } = useFormSignInAuth();
+  const { register, formState: { errors, isSubmitSuccessful, isSubmitting }, handleSubmit, reset, setError } = useFormSignInAuth();
 
   return (
-    <form noValidate onSubmit={handleSubmit(async (data) => {
-      await handleSignInAuthSubmit(data);
-      if (isSubmitSuccessful) {
-        reset();
+    <form noValidate onSubmit={handleSubmit(async ({ authMail, authPass }) => {
+      const signIn = await handleSignInAuthSubmit({
+        authMail, 
+        authPass
+      })
+      if (!signIn.success) {
+        const authError = signIn.errors
+        switch (authError.message) {
+          case "USER_NOT_FOUND":
+            setError("authMail", { 
+              message: "this e-mail not exist." 
+            })
+          case "INVALID_CREDENTIALS":
+            setError("authPass", {
+              message: "this password is incorrect."
+            })
+          case "EMAIL_NOT_VERIFIED": 
+            setError("authMail", {
+              message: "this e-mail not was verified."
+            })
+          default:
+            break;
+        }
+      }
+      else {
+        toast.success("login successfully!! check your e-mail.")
       }
     })} className={cn("flex flex-col gap-6", className)} {...props} >
       <div className="flex flex-col items-center gap-2 text-center">

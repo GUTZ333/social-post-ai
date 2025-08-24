@@ -1,3 +1,4 @@
+import { envs } from "@/schemas/envs-schema";
 import { typeAppRouter } from "@/server/routers/_app-router";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import axios from "axios";
@@ -5,7 +6,7 @@ import axios from "axios";
 const trpcAxios = createTRPCProxyClient<typeAppRouter>({
   links: [
     httpBatchLink({
-      url: "/api/trpc",
+      url: envs.NEXT_URL,
       async fetch(input, init) {
         const { method = "GET", body, headers } = init || {};
 

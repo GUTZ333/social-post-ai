@@ -6,10 +6,10 @@ const envsSchema = z.object({
   DATABASE_MONGO_URL: z.string(),
   RESEND_API_KEY: z.string(),
   RESEND_FROM: z.string(),
-  INSTAGRAM_CLIENT_ID: z.string(),
-  INSTAGRAM_CLIENT_SECRTET: z.string(),
+  // INSTAGRAM_CLIENT_ID: z.string(),
+  // INSTAGRAM_CLIENT_SECRTET: z.string(),
   GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRTET: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
   NEXT_URL: z.url()
 })
 

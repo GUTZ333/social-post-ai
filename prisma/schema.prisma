@@ -8,46 +8,58 @@ datasource db {
   url      = env("DATABASE_PRISMA_URL")
 }
 
-// Tabela principal de usuários
-model Profile {
-  profile_id            String    @id @default(uuid())
-  profile_auth_username String
-  profile_auth_mail     String    @unique
-  profile_auth_pass     String?   @db.Text // opcional, só se usar credentials
-  profile_birth_date    DateTime  @db.Date
-  profile_avatar_url    String?
-  profile_created_at    DateTime  @default(now())
-  profile_updated_at    DateTime  @updatedAt
-  profile_provider      Providers
+// =======================
+// Usuário (Better Auth)
+// =======================
 
-  WorkSpace WorkSpace[]
-  Content   Content[]
-  Accounts  Account[] // relação com OAuth
+model profiles {
+  profile_id            String    @id @default(uuid())
+  profile_auth_username          String    @db.Text
+  profile_auth_mail         String    @unique
+  profile_auth_mail_verified Boolean   @default(false)
+  profile_avatar_url         String?   @db.Text
+  profile_auth_birth_date     DateTime
+  profile_created_at     DateTime  @default(now())
+  profile_updated_at     DateTime  @updatedAt
+
+// auth
+  sessions      Session[]
+  accounts      Account[]
+// projec
+  workSpaces    WorkSpace[]
+  contents      Content[]
 
   @@map("profiles")
 }
 
-// Tabela para OAuth (Google, Instagram)
+// =======================
+// Contas OAuth / Better Auth
+// =======================
+
 model Account {
-  account_id          String   @id @default(uuid())
-  profile_id          String
-  provider            Providers
-  provider_account_id String
-  access_token        String?
-  refresh_token       String?
-  expires_at          Int?
-  token_type          String?
-  scope               String?
+  account_id          String    @id @default(uuid())
+  profile_id              String
+  profile                profiles      @relation(fields: [profile_id], references: [profile_id], onDelete: Cascade)
+  provider_id String
+  account_access_token        String?
+  account_refresh_token       String?
+  account_expires_at          Int?
+  account_token_type          String?
+  account_scope               String?
   id_token            String?
   session_state       String?
 
-  profile Profile @relation(fields: [profile_id], references: [profile_id])
+  account_created_at DateTime @default(now())
+  account_updated_at DateTime @updatedAt
 
-  @@unique([provider, provider_account_id])
+  @@unique([ provider_id, profile_id ])
   @@map("accounts")
 }
 
-// Workspaces do usuário
+// =======================
+// Workspaces
+// =======================
+
 model WorkSpace {
   workspace_id         String   @id @default(uuid())
   workspace_name       String
@@ -55,13 +67,16 @@ model WorkSpace {
   workspace_updated_at DateTime @updatedAt
 
   profile_id String
-  profile    Profile   @relation(fields: [profile_id], references: [profile_id])
-  Content    Content[]
+  profile   profiles   @relation(fields: [profile_id], references: [profile_id], onDelete: Cascade)
+  contents Content[]
 
   @@map("workspaces")
 }
 
-// Conteúdos dentro do workspace
+// =======================
+// Conteúdos
+// =======================
+
 model Content {
   content_id         String   @id @default(uuid())
   content_prompt     String
@@ -70,18 +85,43 @@ model Content {
   content_created_at DateTime @default(now())
   content_updated_at DateTime @updatedAt
 
-  profile_id   String
-  profile      Profile @relation(fields: [profile_id], references: [profile_id])
-
-  workspace_id String
-  workspace    WorkSpace @relation(fields: [workspace_id], references: [workspace_id])
+  profile_id      String
+  profile        profiles      @relation(fields: [profile_id], references: [profile_id], onDelete: Cascade)
+  workspaceId String
+  workspace   WorkSpace @relation(fields: [workspaceId], references: [workspace_id], onDelete: Cascade)
 
   @@map("contents")
 }
 
-// Enum de provedores
-enum Providers {
-  Google
-  InstaGram
-  credentials
+// =======================
+// Sessions (Better Auth)
+// =======================
+
+model Session {
+  session_id        String   @id
+  session_expires_at DateTime
+  session_token     String   @unique
+  session_created_at DateTime @default(now())
+  session_updated_at DateTime @updatedAt
+  session_ip_address String?  @db.Text
+  profile_agent String?  @db.Text
+  profile_id    String
+  profile      profiles     @relation(fields: [profile_id], references: [profile_id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// =======================
+// Verification (Better Auth)
+// =======================
+
+model Verification {
+  verificaton_id         String    @id
+  verificiation_identifier String    @db.Text
+  verification_value      String    @db.Text
+  verification_expiresAt  DateTime
+  verification_created_at  DateTime? @default(now())
+  verification_updated_at  DateTime?
+
+  @@map("verifications")
 }
