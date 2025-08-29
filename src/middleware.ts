@@ -1,10 +1,11 @@
 import { MiddlewareConfig, NextRequest, NextResponse as response } from "next/server";
 import { routesPublic } from "./routes/public/routes-public";
+import { getSessionCookie } from "better-auth/cookies"
 
 export function middleware(request: NextRequest) {
   const pathUri = request.nextUrl.pathname;
   const isPublicRoute = routesPublic.find(route => route.path === pathUri);
-  const authToken = request.cookies.get("next-auth.session-token");
+  const authToken = getSessionCookie(request)
 
   if (isPublicRoute && isPublicRoute.whenAuthenticated === "redirect" && authToken) {
     const URI = request.nextUrl.clone();

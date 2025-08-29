@@ -29,6 +29,7 @@ export default function PublicLayout({
         suppressHydrationWarning
       >
         <NextThemeProvider>
+          
           {children}
         </NextThemeProvider>
       </body>

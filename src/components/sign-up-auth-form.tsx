@@ -58,6 +58,11 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
               break;
           }
         }
+        else {
+          toast.success("Sign Up successfully!! verified your e-mail", {
+            duration: 10
+          })
+        }
       })}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">

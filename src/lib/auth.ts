@@ -4,20 +4,25 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { resend } from "./resend";
+import { twoFactor } from "better-auth/plugins";
+import checkMailTemplate from "@/templates/check-mail-template";
+import ChangePasswordEmail from "@/templates/change-password-template";
 
 const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "mysql",
   }),
+  appName: "social-post-ai",
   emailVerification: {
-    async sendVerificationEmail({ token, url, user }) {
+    async sendVerificationEmail({ url, user: { name, email } }) {
+      const finalUrl = `${url}&redirectTo=/dashboard`;
       await resend.emails.send({
         from: envs.RESEND_FROM,
-        to: user.email,
-        subject: "",
-        html: `Hello ${user.name}, click in this url: ${url}`
+        to: email,
+        subject: "Verify E-mail",
+        react: checkMailTemplate({ url: finalUrl, username: name }),
       })
-    }
+    },
   },
   verification: {
     fields: {
@@ -80,16 +85,20 @@ const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
     requireEmailVerification: true,
-    async sendResetPassword({ token, url, user }, request) {
+    async sendResetPassword({ url, user: { email, name } }) {
+      const finalUrl = `${url}&redirectTo=/change-password`
       await resend.emails.send({
         from: envs.RESEND_FROM,
-        to: user.email,
-        html: `Hello ${user.name}, click in this link ${url}.`,
-        subject: "Forgot Password"
+        to: email,
+        subject: "Change Password",
+        react: ChangePasswordEmail({ resetUrl: finalUrl, username: name })
       })
-    }
+    },
   },
-  plugins: [nextCookies()],
+  plugins: [
+    nextCookies(),
+    twoFactor()
+  ],
   socialProviders: {
     google: {
       clientId: envs.GOOGLE_CLIENT_ID,

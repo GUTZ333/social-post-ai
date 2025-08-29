@@ -16,6 +16,10 @@ export const routesPublic = [
     whenAuthenticated: "redirect"
   },
   {
+    path: "/set-password",
+    whenAuthenticated: "redirect"
+  },
+  {
     path: "/about",
     whenAuthenticated: "next"
   },

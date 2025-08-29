@@ -1,14 +1,14 @@
 "use client";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
-import { FaGoogle, FaInstagram } from "react-icons/fa"
-import { handleSignInAuthSubmit } from "@/service/sign-in-auth-submit"
-import { useFormSignInAuth } from "@/hooks/use-form-sign-in-auth"
-import clsx from "clsx"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { FaGoogle, FaInstagram } from "react-icons/fa";
+import { handleSignInAuthSubmit } from "@/service/sign-in-auth-submit";
+import { useFormSignInAuth } from "@/hooks/use-form-sign-in-auth";
+import clsx from "clsx";
 import { toast } from "sonner";
 
 export default function SignInAuthForm({
@@ -16,7 +16,7 @@ export default function SignInAuthForm({
   ...props
 }: React.ComponentProps<"form">) {
 
-  const { register, formState: { errors, isSubmitSuccessful, isSubmitting }, handleSubmit, reset, setError } = useFormSignInAuth();
+  const { register, formState: { errors, isSubmitting }, handleSubmit, reset, setError } = useFormSignInAuth();
 
   return (
     <form noValidate onSubmit={handleSubmit(async ({ authMail, authPass }) => {
@@ -25,26 +25,28 @@ export default function SignInAuthForm({
         authPass
       })
       if (!signIn.success) {
-        const authError = signIn.errors
-        switch (authError.message) {
+        const authError = signIn.errors.body
+        switch (authError?.code) {
           case "USER_NOT_FOUND":
             setError("authMail", { 
-              message: "this e-mail not exist." 
+              message: authError.message
             })
           case "INVALID_CREDENTIALS":
             setError("authPass", {
-              message: "this password is incorrect."
+              message: authError.message
             })
           case "EMAIL_NOT_VERIFIED": 
             setError("authMail", {
-              message: "this e-mail not was verified."
+              message: authError.message
             })
           default:
             break;
         }
       }
       else {
-        toast.success("login successfully!! check your e-mail.")
+        toast.success("login successfully!! check your e-mail.", {
+          duration: 10
+        })
       }
     })} className={cn("flex flex-col gap-6", className)} {...props} >
       <div className="flex flex-col items-center gap-2 text-center">
