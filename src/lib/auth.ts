@@ -40,13 +40,15 @@ const auth = betterAuth({
   },
   account: {
     fields: {
+      password: "account_pass",
       providerId: "provider_id",
       userId: "profile_id",
       accountId: "account_id",
       idToken: "id_token",
       accessToken: "account_access_token",
+      accessTokenExpiresAt: "account_access_token_expires_at",
       refreshToken: "account_refresh_token",
-      accessTokenExpiresAt: "account_expires_at",
+      refreshTokenExpiresAt: "account_refresh_token_expires_at",
       scope: "account_scope",
       createdAt: "account_created_at",
       updatedAt: "account_updated_at"

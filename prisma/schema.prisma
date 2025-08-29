@@ -43,8 +43,9 @@ model Account {
   provider_id String
   account_access_token        String?
   account_refresh_token       String?
-  account_expires_at          Int?
-  account_token_type          String?
+  account_access_token_expires_at          DateTime?
+  account_refresh_token_expires_at          DateTime?
+  account_pass String
   account_scope               String?
   id_token            String?
   session_state       String?
