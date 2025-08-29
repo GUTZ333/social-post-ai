@@ -1,35 +1,20 @@
-import { Document, Schema } from "mongoose";
+import zodSchema from "@zodyac/zod-mongoose";
+import { z } from "zod";
 
-interface IFeature extends Document {
-  feature_name: string
-  feature_desc: string
-  feature_icon_name: string
-  feature_image_url_dark?: string
-  feature_image_url_light?: string
-}
+export const FeatureZodSchema = z.object({
+  feature_name: z.string().trim().min(1),
+  feature_desc: z.string().min(1),
+  feature_icon_name: z.string().min(1),
+  feature_image_url_dark: z.string().optional(),
+  feature_image_url_light: z.string().optional(),
+});
 
-const featureSchema = new Schema<IFeature>({
-  feature_name: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  feature_desc: {
-    type: String,
-    required: true
-  },
-  feature_icon_name: {
-    type: String,
-    required: true
-  },
-  feature_image_url_dark: {
-    type: String,
-    required: false
-  },
-  feature_image_url_light: {
-    type: String,
-    required: false
-  },
-})
+export type Feature = z.infer<typeof FeatureZodSchema>;
 
-export { featureSchema };
+export const FeatureDocumentZodSchema = FeatureZodSchema.extend({
+  _id: z.string(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+
+export const featureMongoSchema = zodSchema(FeatureZodSchema)

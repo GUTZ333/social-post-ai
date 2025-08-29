@@ -1,6 +1,6 @@
 import { db } from "@/db/prisma";
 
-describe("Prisma ORM connection", () => {
+describe("Prisma ORM", () => {
   test("connection successfully!!", async () => {
     await expect(db.$connect()).resolves.toBeUndefined()
   })

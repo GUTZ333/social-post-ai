@@ -93,7 +93,7 @@ const auth = betterAuth({
         from: envs.RESEND_FROM,
         to: email,
         subject: "Verify E-mail",
-        react: checkMailTemplate({ url: link, username: name }),
+        react: checkMailTemplate({ link, username: name }),
       })
     },
   },

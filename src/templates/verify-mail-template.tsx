@@ -14,12 +14,12 @@ import {
 
 interface VerifyMailTemplateProps {
   username: string;
-  url: string;
+  link: string;
 }
 
 export default function VerifyMailTemplate({
   username,
-  url,
+  link: url,
 }: VerifyMailTemplateProps): ReactNode {
   return (
     <Html>
