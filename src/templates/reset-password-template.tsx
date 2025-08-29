@@ -11,15 +11,15 @@ import {
   Heading,
 } from "@react-email/components";
 
-interface ChangePasswordEmailProps {
+interface ResetPasswordTemplateProps {
   username: string;
   resetUrl: string; // URL da página para mudar a senha
 }
 
-export default function ChangePasswordEmail({
+export default function ResetPasswordTemplate({
   username,
   resetUrl,
-}: ChangePasswordEmailProps): ReactNode {
+}: ResetPasswordTemplateProps): ReactNode {
   return (
     <Html>
       <Head />

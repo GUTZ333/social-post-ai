@@ -4,26 +4,20 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { resend } from "./resend";
-import { twoFactor } from "better-auth/plugins";
-import checkMailTemplate from "@/templates/check-mail-template";
-import ChangePasswordEmail from "@/templates/change-password-template";
+import checkMailTemplate from "@/templates/verify-mail-template";
+import ResetPasswordTemplate from "@/templates/reset-password-template";
+import * as bcryptjs from "bcryptjs";
 
 const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "mysql",
   }),
-  appName: "social-post-ai",
-  emailVerification: {
-    async sendVerificationEmail({ url, user: { name, email } }) {
-      const finalUrl = `${url}&redirectTo=/dashboard`;
-      await resend.emails.send({
-        from: envs.RESEND_FROM,
-        to: email,
-        subject: "Verify E-mail",
-        react: checkMailTemplate({ url: finalUrl, username: name }),
-      })
-    },
+  rateLimit: {
+    enabled: true,
+    window: 10,
+    max: 100
   },
+  appName: "social-post-ai",
   verification: {
     fields: {
       value: "verification_value",
@@ -33,12 +27,10 @@ const auth = betterAuth({
       updatedAt: "verification_updated_at"
     }
   },
-  advanced: {
-    database: {
-      generateId: false
-    }
-  },
   account: {
+    accountLinking: {
+      enabled: false
+    },
     fields: {
       password: "account_pass",
       providerId: "provider_id",
@@ -55,6 +47,13 @@ const auth = betterAuth({
     }
   },
   session: {
+    expiresIn: 30 * 24 * 60 * 60, // 7 Days
+    updateAge: 60 * 60 * 24, // 1 Day
+    freshAge: 60 * 5,
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60
+    },
     fields: {
       userAgent: "profile_agent",
       userId: "profile_id",
@@ -83,23 +82,47 @@ const auth = betterAuth({
       },
     },
   },
+  emailVerification: {
+    sendOnSignUp: true,
+    sendOnSignIn: true,
+    expiresIn: 60 * 60,
+    autoSignInAfterVerification: true,
+    async sendVerificationEmail({ url, user: { name, email } }) {
+      const link = `${url}&redirectTo=/dashboard`;
+      await resend.emails.send({
+        from: envs.RESEND_FROM,
+        to: email,
+        subject: "Verify E-mail",
+        react: checkMailTemplate({ url: link, username: name }),
+      })
+    },
+  },
   emailAndPassword: {
+    minPasswordLength: 6,
+    maxPasswordLength: 40,
+    password: {
+      async hash(password) {
+        return await bcryptjs.hash(password, 10)
+      },
+      async verify({ hash, password }) {
+        return await bcryptjs.compare(password, hash)
+      },
+    },
     enabled: true,
-    autoSignIn: true,
+    autoSignIn: false,
     requireEmailVerification: true,
     async sendResetPassword({ url, user: { email, name } }) {
-      const finalUrl = `${url}&redirectTo=/change-password`
+      const link = `${url}&redirectTo=/reset-password`
       await resend.emails.send({
         from: envs.RESEND_FROM,
         to: email,
         subject: "Change Password",
-        react: ChangePasswordEmail({ resetUrl: finalUrl, username: name })
+        react: ResetPasswordTemplate({ resetUrl: link, username: name })
       })
     },
   },
   plugins: [
     nextCookies(),
-    twoFactor()
   ],
   socialProviders: {
     google: {
@@ -107,7 +130,12 @@ const auth = betterAuth({
       clientSecret: envs.GOOGLE_CLIENT_SECRET,
       redirectURI: `${envs.NEXT_URL}/api/auth/callback/google`
     },
-  }
+  },
+  advanced: {
+    database: {
+      generateId: false
+    }
+  },
 })
 
 export { auth }

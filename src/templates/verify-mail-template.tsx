@@ -12,15 +12,15 @@ import {
   Img,
 } from "@react-email/components";
 
-interface VerificationEmailProps {
+interface VerifyMailTemplateProps {
   username: string;
   url: string;
 }
 
-export default function VerificationEmail({
+export default function VerifyMailTemplate({
   username,
   url,
-}: VerificationEmailProps): ReactNode {
+}: VerifyMailTemplateProps): ReactNode {
   return (
     <Html>
       <Head />
