@@ -9,8 +9,6 @@ import { FaGoogle, FaInstagram } from "react-icons/fa";
 import { handleSignInAuthSubmit } from "@/service/sign-in-auth-submit";
 import { useFormSignInAuth } from "@/hooks/use-form-sign-in-auth";
 import clsx from "clsx";
-import { toast } from "sonner";
-
 export default function SignInAuthForm({
   className,
   ...props
@@ -19,36 +17,7 @@ export default function SignInAuthForm({
   const { register, formState: { errors, isSubmitting }, handleSubmit, reset, setError } = useFormSignInAuth();
 
   return (
-    <form noValidate onSubmit={handleSubmit(async ({ authMail, authPass }) => {
-      const signIn = await handleSignInAuthSubmit({
-        authMail, 
-        authPass
-      })
-      if (!signIn.success) {
-        const authError = signIn.errors.body
-        switch (authError?.code) {
-          case "USER_NOT_FOUND":
-            setError("authMail", { 
-              message: authError.message
-            })
-          case "INVALID_CREDENTIALS":
-            setError("authPass", {
-              message: authError.message
-            })
-          case "EMAIL_NOT_VERIFIED": 
-            setError("authMail", {
-              message: authError.message
-            })
-          default:
-            break;
-        }
-      }
-      else {
-        toast.success("login successfully!! check your e-mail.", {
-          duration: 10
-        })
-      }
-    })} className={cn("flex flex-col gap-6", className)} {...props} >
+    <form noValidate onSubmit={handleSubmit(handleSignInAuthSubmit)} className={cn("flex flex-col gap-6", className)} {...props} >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Sign In to your account</h1>
         <p className="text-muted-foreground text-sm text-balance">
@@ -94,11 +63,11 @@ export default function SignInAuthForm({
             Or continue with
           </span>
         </div>
-        <Button variant="outline" className="w-full">
+        <Button type="button" variant="outline" className="w-full">
           <FaGoogle />
           Sign In with Google
         </Button>
-        <Button variant="outline" className="w-full">
+        <Button type="button" variant="outline" className="w-full">
           <FaInstagram />
           Sign In with Instagram
         </Button>

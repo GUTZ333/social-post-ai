@@ -27,43 +27,7 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
 
   return (
     <div className={clsx("flex flex-col gap-6", className)} {...props}>
-      <form noValidate onSubmit={handleSubmit(async ({
-        authBirthDate,
-        authMail, 
-        authPass, 
-        authUsername
-      }) => {
-        const data = await handleSignUpAuthSubmit({
-          authBirthDate,
-          authMail,
-          authPass,
-          authUsername
-        })
-
-        if (!data.success) {
-          switch (data.errors.message) {
-            case "USER_ALREADY_EXISTS":
-              setError("authUsername", {
-                message: "this username already exist."
-              })
-            case "EMAIL_NOT_VERIFIED":
-              setError("authMail", {
-                message: "this e-mail not verified."
-              })
-            case "PASSWORD_TOO_WEAK":
-              setError("authPass", {
-                message: "this password is incorrect."
-              })
-            default:
-              break;
-          }
-        }
-        else {
-          toast.success("Sign Up successfully!! verified your e-mail", {
-            duration: 10
-          })
-        }
-      })}>
+      <form noValidate onSubmit={handleSubmit(handleSignUpAuthSubmit)}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
             <Link

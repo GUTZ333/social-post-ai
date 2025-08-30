@@ -2,10 +2,10 @@ import { setPasswordSchema, typeSetPasswordSchema } from "@/schemas/set-password
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-function useFormSetPassword() {
+function useFormResetPassword() {
   return useForm<typeSetPasswordSchema>({
     resolver: zodResolver(setPasswordSchema)
   })
 }
 
-export { useFormSetPassword }
+export { useFormResetPassword }

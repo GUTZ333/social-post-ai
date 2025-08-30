@@ -2,36 +2,20 @@
 
 import { auth } from "@/lib/auth";
 import { typeSignInAuthSchema } from "@/schemas/sign-in-schema";
-import { BetterAuthError, } from "better-auth";
-import { APIError } from "better-auth/api";
 import { headers } from "next/headers";
 
-async function handleSignInAuthSubmit({ authMail, authPass }: typeSignInAuthSchema): Promise<{
-  success: true
-  data: Awaited<ReturnType<typeof auth.api.signInEmail>>
-} | {
-  success: false
-  errors: APIError
-}> {
+export async function handleSignInAuthSubmit({ authMail, authPass }: typeSignInAuthSchema) {
   try {
-    const data = await auth.api.signInEmail({
-      headers: await headers(),
+    await auth.api.signInEmail({
       body: {
         email: authMail,
         password: authPass
-      }
+      },
+      headers: await headers(),
+      method: "POST"
     })
-    return {
-      success: true,
-      data
-    }
   }
   catch (err: any) {
-    return {
-      success: false,
-      errors: err as APIError
-    }
+    console.log("erro na tentativa de login", err)
   }
 }
-
-export { handleSignInAuthSubmit };

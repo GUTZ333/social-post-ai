@@ -5,7 +5,7 @@ import { envs } from "@/schemas/envs-schema";
 export const trpcAxios = createTRPCProxyClient<typeAppRouter>({
   links: [
     httpBatchLink({
-      url: `${envs.NEXT_URL}/api/trpc`,
+      url: envs.NEXT_URL,
       fetch: (input, init) => fetch(input, { ...init, credentials: "include" }),
     }),
   ],

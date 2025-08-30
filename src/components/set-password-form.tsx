@@ -7,14 +7,14 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import Image from "next/image"
 import SocialPostIcon from "@/images/social-post-icon.png"
-import { useFormSetPassword } from "@/hooks/use-form-set-password"
+import { useFormResetPassword } from "@/hooks/use-form-reset-password"
 import clsx from "clsx";
 
-export default function SetPasswordForm({
+export default function ResetPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { register, handleSubmit, formState: { isSubmitting, errors } } = useFormSetPassword();
+  const { register, handleSubmit, formState: { isSubmitting, errors } } = useFormResetPassword();
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
