@@ -27,13 +27,13 @@ export const auth = betterAuth({
   // Configurando provedor de autenticação com o Google
   socialProviders: {
     google: {
-      clientId: envs.GOOGLE_CLIENT_ID,
-      clientSecret: envs.GOOGLE_CLIENT_SECRET
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }
   },
   // assinalando as credenciais para a comunicação da aplicação com a Api do Better Auth
-  baseURL: envs.BETTER_AUTH_URL,
-  secret: envs.BETTER_AUTH_SECRET,
+  baseURL: process.env.BETTER_AUTH_URL as string,
+  secret: process.env.BETTER_AUTH_SECRET as string,
 
   // Plugins que iram fazer parte da aplicação
   plugins: [nextCookies()], // Next Cookies

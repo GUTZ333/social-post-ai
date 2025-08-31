@@ -19,15 +19,52 @@ import { enUS } from "date-fns/locale";
 import { FaGoogle, FaInstagram } from "react-icons/fa";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default function SignUpAuthForm({ className, ...props }: ComponentProps<"div">) {
 
   const [openPopover, setOpenPopover] = useState<boolean>(false);
-  const { register, formState: { errors, isSubmitting, isSubmitSuccessful }, handleSubmit, reset, control, setError } = useFormSignUpAuth();
+  const { register, formState: { errors, isSubmitting }, handleSubmit, reset, control, setError } = useFormSignUpAuth();
 
   return (
     <div className={clsx("flex flex-col gap-6", className)} {...props}>
-      <form noValidate onSubmit={handleSubmit(handleSignUpAuthSubmit)}>
+      <form noValidate onSubmit={handleSubmit(async ({ authBirthDate, authMail, authPass, authUsername }) => {
+        const signUp = await handleSignUpAuthSubmit({
+          authBirthDate,
+          authMail,
+          authPass,
+          authUsername
+        })
+
+        if (signUp.success) {
+          reset();
+          toast.success("Sign Up sucessfully!!", {
+            description: "Your account was created now."
+          })
+        }
+        else {
+          const { error } = signUp;
+          const { USER_ALREADY_EXISTS, USER_ALREADY_HAS_PASSWORD, ACCOUNT_NOT_FOUND } = auth.$ERROR_CODES
+          toast.error("Sign Up failed.", {
+            duration: 3000, // 3 segundos
+          })
+          switch (error) {
+            case USER_ALREADY_EXISTS:
+              setError("authMail", {
+                message: error
+              })
+              break;
+            case ACCOUNT_NOT_FOUND:
+              setError("authPass", {
+                message: error
+              })
+              break;
+            default:
+              break
+          }
+        }
+      })}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
             <Link
@@ -159,7 +196,7 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
         By clicking continue, you agree to our <Link href="#">Terms of Service</Link>{" "}
         and <Link href="#">Privacy Policy</Link>.
       </div>
-      <Toaster position="top-left" />
+      <Toaster position="top-center" />
     </div>
   )
 }

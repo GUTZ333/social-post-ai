@@ -9,6 +9,10 @@ import { FaGoogle, FaInstagram } from "react-icons/fa";
 import { handleSignInAuthSubmit } from "@/service/sign-in-auth-submit";
 import { useFormSignInAuth } from "@/hooks/use-form-sign-in-auth";
 import clsx from "clsx";
+import { toast, Toaster } from "sonner";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+
 export default function SignInAuthForm({
   className,
   ...props
@@ -17,7 +21,55 @@ export default function SignInAuthForm({
   const { register, formState: { errors, isSubmitting }, handleSubmit, reset, setError } = useFormSignInAuth();
 
   return (
-    <form noValidate onSubmit={handleSubmit(handleSignInAuthSubmit)} className={cn("flex flex-col gap-6", className)} {...props} >
+    <form noValidate onSubmit={handleSubmit(async ({ authMail, authPass }) => {
+
+      const signIn = await handleSignInAuthSubmit({
+        authMail, authPass
+      });
+
+      if (signIn.success) {
+        toast.success("Login sucessfully!!", {
+          description: "You are already logged in to the platform!",
+          duration: 2000 // 2 segundos
+        })
+        redirect(signIn.data.url as string)
+      }
+      else {
+        const { error } = signIn;
+        const { USER_NOT_FOUND, INVALID_EMAIL_OR_PASSWORD, INVALID_PASSWORD, INVALID_EMAIL } = auth.$ERROR_CODES;
+        toast.error("Login is failed.", {
+          duration: 3000, // 3 segundos,
+        })
+        switch (error) {
+          case USER_NOT_FOUND:
+            setError("authMail", {
+              message: error
+            })
+            break;
+          case INVALID_EMAIL_OR_PASSWORD:
+            setError("authPass", {
+              message: error
+            })
+            setError("authMail", {
+              message: error
+            })
+            break;
+          case INVALID_EMAIL:
+            setError("authMail", {
+              message: error
+            })
+            break;
+          case INVALID_PASSWORD:
+            setError("authPass", {
+              message: error
+            })
+            break;
+          default: 
+            break
+        }
+      }
+
+    })} className={cn("flex flex-col gap-6", className)} {...props} >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Sign In to your account</h1>
         <p className="text-muted-foreground text-sm text-balance">
@@ -47,7 +99,7 @@ export default function SignInAuthForm({
             </Link>
           </div>
           <div className="flex flex-col gap-1">
-            <Input id="auth-pass" type="password" className={clsx(errors.authPass && "shadow-lg shadow-red-500/50 border border-red-500 focus-visible:ring-0  drop-shadow-lg p-4 bg-white rounded-lg")} {...register("authPass")} />
+            <Input placeholder="**********" id="auth-pass" type="password" className={clsx(errors.authPass && "shadow-lg shadow-red-500/50 border border-red-500 focus-visible:ring-0  drop-shadow-lg p-4 bg-white rounded-lg")} {...register("authPass")} />
             {errors.authPass && (
               <span className="text-red-500 text-sm">
                 {errors.authPass.message}
@@ -78,6 +130,7 @@ export default function SignInAuthForm({
           Sign up
         </Link>
       </div>
+      <Toaster position="top-center" />
     </form>
   )
 }

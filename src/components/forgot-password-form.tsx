@@ -9,8 +9,6 @@ import Link from "next/link";
 import Image from "next/image";
 import SocialPostIcon from "@/app/favicon.ico";
 import { useFormForgotPassword } from "@/hooks/use-form-forgot-password";
-import { handleForgotPasswordSubmit } from "@/service/forgot-password-submit";
-import { error } from "console";
 
 export default function ForgptPasswordForm({ className, ...props }: ComponentProps<"div">) {
 
@@ -18,10 +16,7 @@ export default function ForgptPasswordForm({ className, ...props }: ComponentPro
 
   return <div className={clsx("flex flex-col gap-6", className)} {...props} >
     <form onSubmit={handleSubmit(async (data) => {
-      await handleForgotPasswordSubmit(data);
-      if (!isSubmitSuccessful) {
-        reset();
-      }
+      await new Promise(resolve => setTimeout(resolve, 1000))
     })} noValidate>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col items-center gap-2">
