@@ -9,15 +9,14 @@ import Link from "next/link";
 import Image from "next/image";
 import SocialPostIcon from "@/app/favicon.ico";
 import { useFormForgotPassword } from "@/hooks/use-form-forgot-password";
+import { handleForgotPassword } from "@/handlers/forgot-password-submit";
 
-export default function ForgptPasswordForm({ className, ...props }: ComponentProps<"div">) {
+export default function ForgotPasswordForm({ className, ...props }: ComponentProps<"div">) {
 
-  const { handleSubmit, reset, formState: { errors, isSubmitSuccessful, isSubmitting }, register } = useFormForgotPassword();
+  const { handleSubmit, formState: { errors, isSubmitting }, register } = useFormForgotPassword();
 
   return <div className={clsx("flex flex-col gap-6", className)} {...props} >
-    <form onSubmit={handleSubmit(async (data) => {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-    })} noValidate>
+    <form onSubmit={handleSubmit(handleForgotPassword)} noValidate>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col items-center gap-2">
           <Link

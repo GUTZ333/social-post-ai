@@ -13,7 +13,7 @@ export async function handleSignInAuthSubmit({ authMail, authPass }: typeSignInA
         body: {
           email: authMail,
           password: authPass,
-          callbackURL: `${process.env.BETTER_AUTH_URL}/dashboard`
+          callbackURL: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/dashboard`,
         },
         headers: await headers(),
         method: "POST",

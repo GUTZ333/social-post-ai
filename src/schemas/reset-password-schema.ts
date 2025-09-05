@@ -1,6 +1,6 @@
 import z from "zod";
 
-const setPasswordSchema = z.object({
+export const resetPasswordSchema = z.object({
   currentPass: z.string().nonempty({ message: "the password cannot be empty." }).min(6, {
     message: "Password must be at least 6 characters long."
   }).max(40, {
@@ -8,6 +8,4 @@ const setPasswordSchema = z.object({
   })
 })
 
-type typeSetPasswordSchema = z.infer<typeof setPasswordSchema>
-
-export { setPasswordSchema, type typeSetPasswordSchema }
+export type typeSetPasswordSchema = z.infer<typeof resetPasswordSchema>

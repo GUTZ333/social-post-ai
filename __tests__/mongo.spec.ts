@@ -1,11 +1,10 @@
 import { featuresModel } from "@/db/mongo";
 import { trpcAxios } from "@/lib/trpc-axios";
-import { envs } from "@/schemas/envs-schema";
 import mongoose from "mongoose";
 
 describe("Mongo DB.", () => {
   beforeAll(async () => {
-    await mongoose.connect(envs.DATABASE_MONGO_URL);
+    await mongoose.connect(process.env.DATABASE_MONGO_URL as string);
   }); // até 20s para conectar
 
   afterAll(async () => {

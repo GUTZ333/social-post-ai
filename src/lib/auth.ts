@@ -3,16 +3,25 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import * as bcryptjs from "bcryptjs";
+import { resend } from "./resend";
+import ResetPasswordTemplate from "@/templates/reset-password-template";
 
 export const auth = betterAuth({
   // Dando o acesso do Prisma ORM para o better auth fazer as automações deles no meu banco MySQL
   database: prismaAdapter(db, {
     provider: "mysql"
   }),
-  
-
   // Configurando provedor de autenticação por credenciais
   emailAndPassword: {
+    
+    async sendResetPassword({ url, user: { email, name } }) {
+      await resend.emails.send({
+        from: process.env.NEXT_PUBLIC_RESEND_FROM as string,
+        to: email,
+        subject: "Reset your password",
+        react: ResetPasswordTemplate({ email, name, resetUrl: url })
+      })
+    },
     enabled: true,
     autoSignIn: true,
     password: {
@@ -33,8 +42,8 @@ export const auth = betterAuth({
       prompt: "select_account consent",
       scope: ["https://www.googleapis.com/auth/user.birthday.read", "email", "profile", "openid"],
       disableSignUp: false,
-      
-      async mapProfileToUser({ picture, name, email, email_verified,  }) {
+
+      async mapProfileToUser({ picture, name, email, email_verified, }) {
         return {
           image: picture,
           name,

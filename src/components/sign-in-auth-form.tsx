@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { FaGoogle, FaInstagram } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { handleSignInAuthSubmit } from "@/handlers/sign-in-auth-submit";
 import { useFormSignInAuth } from "@/hooks/use-form-sign-in-auth";
 import clsx from "clsx";

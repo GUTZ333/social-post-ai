@@ -1,4 +1,3 @@
-import { envsSchema } from "@/schemas/envs-schema"
 import { createAuthClient } from "better-auth/client"
 import { nextCookies } from "better-auth/next-js"
 

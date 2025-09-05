@@ -11,4 +11,4 @@ export const envsSchema = z.object({
   NEXT_PUBLIC_BETTER_AUTH_SECRET: z.string(),
 })
 
-export const envs = envsSchema.parse(process.env)
+const envs = envsSchema.parse(process.env);  
