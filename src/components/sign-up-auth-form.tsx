@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { ChevronDownIcon } from "lucide-react";
 import { Calendar } from "./ui/calendar";
 import { useFormSignUpAuth } from "@/hooks/use-form-sign-up-auth";
-import { handleSignUpAuthSubmit } from "@/service/sign-up-auth-submit";
+import { handleSignUpAuthSubmit } from "@/handlers/sign-up-auth-submit";
 import { Controller } from "react-hook-form";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
@@ -20,7 +20,7 @@ import { FaGoogle, FaInstagram } from "react-icons/fa";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { handleSignInGoogle } from "@/handlers/sign-in-google";
 
 export default function SignUpAuthForm({ className, ...props }: ComponentProps<"div">) {
 
@@ -45,7 +45,7 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
         }
         else {
           const { error } = signUp;
-          const { USER_ALREADY_EXISTS, USER_ALREADY_HAS_PASSWORD, ACCOUNT_NOT_FOUND } = auth.$ERROR_CODES
+          const { USER_ALREADY_EXISTS, ACCOUNT_NOT_FOUND } = auth.$ERROR_CODES
           toast.error("Sign Up failed.", {
             duration: 3000, // 3 segundos
           })
@@ -181,11 +181,7 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
             </span>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Button variant="outline" type="button" className="w-full">
-              <FaInstagram size={24} className="" />
-              Instagram
-            </Button>
-            <Button variant="outline" type="button" className="w-full">
+            <Button type="button" variant="outline" onClick={handleSignInGoogle} className="w-full">
               <FaGoogle size={24} className="" />
               Google
             </Button>

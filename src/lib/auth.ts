@@ -1,15 +1,15 @@
 import { db } from "@/db/prisma";
-import { envs } from "@/schemas/envs-schema";
 import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma"
+import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-import * as bcryptjs from "bcryptjs"
+import * as bcryptjs from "bcryptjs";
 
 export const auth = betterAuth({
   // Dando o acesso do Prisma ORM para o better auth fazer as automações deles no meu banco MySQL
   database: prismaAdapter(db, {
     provider: "mysql"
   }),
+  
 
   // Configurando provedor de autenticação por credenciais
   emailAndPassword: {
@@ -27,13 +27,26 @@ export const auth = betterAuth({
   // Configurando provedor de autenticação com o Google
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
+      accessType: "offline",
+      prompt: "select_account consent",
+      scope: ["https://www.googleapis.com/auth/user.birthday.read", "email", "profile", "openid"],
+      disableSignUp: false,
+      
+      async mapProfileToUser({ picture, name, email, email_verified,  }) {
+        return {
+          image: picture,
+          name,
+          email,
+          emailVerified: email_verified,
+        }
+      }
     }
   },
   // assinalando as credenciais para a comunicação da aplicação com a Api do Better Auth
-  baseURL: process.env.BETTER_AUTH_URL as string,
-  secret: process.env.BETTER_AUTH_SECRET as string,
+  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL as string,
+  secret: process.env.NEXT_PUBLIC_BETTER_AUTH_SECRET as string,
 
   // Plugins que iram fazer parte da aplicação
   plugins: [nextCookies()], // Next Cookies
@@ -47,5 +60,5 @@ export const auth = betterAuth({
         input: true
       }
     }
-  },
+  }
 })

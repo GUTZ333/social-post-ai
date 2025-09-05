@@ -1,16 +1,14 @@
 import { z } from "zod";
 import "dotenv/config";
 
-const envsSchema = z.object({
-  RESEND_API_KEY: z.string(),
-  RESEND_FROM: z.string(),
-  GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRET: z.string(),
-  NEXT_URL: z.url(),
-  BETTER_AUTH_URL: z.string(),
-  BETTER_AUTH_SECRET: z.string(),
+export const envsSchema = z.object({
+  NEXT_PUBLIC_RESEND_API_KEY: z.string(),
+  NEXT_PUBLIC_RESEND_FROM: z.string(),
+  NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string(),
+  NEXT_PUBLIC_GOOGLE_CLIENT_SECRET: z.string(),
+  NEXT_PUBLIC_NEXT_URL: z.url(),
+  NEXT_PUBLIC_BETTER_AUTH_URL: z.string(),
+  NEXT_PUBLIC_BETTER_AUTH_SECRET: z.string(),
 })
 
-const envs = envsSchema.parse(process.env)
-
-export { envsSchema, envs };
+export const envs = envsSchema.parse(process.env)

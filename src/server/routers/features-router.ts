@@ -1,6 +1,6 @@
 import { envs } from "@/schemas/envs-schema";
 import { createTRPCrouter, publicProcedure } from "../trpc";
-import {  } from "@/db/mongo";
+import { } from "@/db/mongo";
 import { FeatureZodSchema } from "@/schemas/feature-schema";
 
 const featureRouter = createTRPCrouter({

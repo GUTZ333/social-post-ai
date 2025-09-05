@@ -6,12 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { FaGoogle, FaInstagram } from "react-icons/fa";
-import { handleSignInAuthSubmit } from "@/service/sign-in-auth-submit";
+import { handleSignInAuthSubmit } from "@/handlers/sign-in-auth-submit";
 import { useFormSignInAuth } from "@/hooks/use-form-sign-in-auth";
 import clsx from "clsx";
 import { toast, Toaster } from "sonner";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { handleSignInGoogle } from "@/handlers/sign-in-google";
 
 export default function SignInAuthForm({
   className,
@@ -115,13 +116,9 @@ export default function SignInAuthForm({
             Or continue with
           </span>
         </div>
-        <Button type="button" variant="outline" className="w-full">
+        <Button type="button" onClick={handleSignInGoogle} variant="outline" className="w-full">
           <FaGoogle />
           Sign In with Google
-        </Button>
-        <Button type="button" variant="outline" className="w-full">
-          <FaInstagram />
-          Sign In with Instagram
         </Button>
       </div>
       <div className="text-center text-sm">
