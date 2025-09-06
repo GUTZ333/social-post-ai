@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Social Post AI || Home",
+  title: "Social Post AI || Landing Page",
 };
 
 export default function PublicLayout({
@@ -29,7 +29,6 @@ export default function PublicLayout({
         suppressHydrationWarning
       >
         <NextThemeProvider>
-          
           {children}
         </NextThemeProvider>
       </body>

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import Image from "next/image"
-import SocialPostIcon from "@/images/social-post-icon.png"
+import SocialPostIcon from "@/images/social-post-icon.webp"
 import { useFormResetPassword } from "@/hooks/use-form-reset-password"
 import clsx from "clsx";
 

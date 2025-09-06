@@ -5,9 +5,11 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 function NextThemeProvider({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      {children}
-    </ThemeProvider>
+    <>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        {children}
+      </ThemeProvider>
+    </>
   );
 }
 
