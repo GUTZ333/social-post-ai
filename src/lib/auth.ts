@@ -12,6 +12,8 @@ export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "mysql"
   }),
+  // Provider application name
+  appName: "Social Post AI",
   // Configurando o serviço de verificação de email
   emailVerification: {
     // ele será automatizacamente acionado quando o usuário se inscrever ou entrar
@@ -56,7 +58,7 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
-      accessType: "offline",
+      accessType: "offline",  
       prompt: "select_account consent",
       scope: ["https://www.googleapis.com/auth/user.birthday.read", "email", "profile", "openid"],
       disableSignUp: false,
@@ -86,6 +88,15 @@ export const auth = betterAuth({
         required: true,
         input: true
       }
+    }
+  },
+  session: {
+    expiresIn: 60 * 60 * 24 * 30, // 30 days
+    disableSessionRefresh: false, // se true, a sessão não será renovada automaticamente
+    freshAge: 60 * 60 * 24, // 24 hours (em segundos) - define o tempo para a sessão ser considerada "fresca"
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // 5 minutes
     }
   }
 })
