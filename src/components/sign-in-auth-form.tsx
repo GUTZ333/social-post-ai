@@ -13,6 +13,7 @@ import { toast, Toaster } from "sonner";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { handleSignInGoogle } from "@/handlers/sign-in-google";
+import { Loader2 } from "lucide-react";
 
 export default function SignInAuthForm({
   className,
@@ -31,18 +32,23 @@ export default function SignInAuthForm({
       if (signIn.success) {
         toast.success("Login sucessfully!!", {
           description: "You are already logged in to the platform!",
-          duration: 2000 // 2 segundos
+          duration: 3000 // 3 segundos
         })
         redirect(signIn.data.url as string)
       }
       else {
         const { error } = signIn;
-        const { USER_NOT_FOUND, INVALID_EMAIL_OR_PASSWORD, INVALID_PASSWORD, INVALID_EMAIL } = auth.$ERROR_CODES;
+        const { USER_NOT_FOUND, INVALID_EMAIL_OR_PASSWORD, INVALID_PASSWORD, INVALID_EMAIL, EMAIL_NOT_VERIFIED } = auth.$ERROR_CODES;
         toast.error("Login is failed.", {
           duration: 3000, // 3 segundos,
         })
         switch (error) {
           case USER_NOT_FOUND:
+            setError("authMail", {
+              message: error
+            })
+            break;
+          case EMAIL_NOT_VERIFIED:
             setError("authMail", {
               message: error
             })
@@ -65,7 +71,7 @@ export default function SignInAuthForm({
               message: error
             })
             break;
-          default: 
+          default:
             break
         }
       }
@@ -109,7 +115,7 @@ export default function SignInAuthForm({
           </div>
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Signing In..." : "Sign In"}
+          {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : "Sign In"}
         </Button>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background text-muted-foreground relative z-10 px-2">

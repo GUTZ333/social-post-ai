@@ -1,3 +1,6 @@
-import { BetterAuthClient } from "./lib/auth-client";
+import { db } from "@/db/prisma"
 
-console.log(BetterAuthClient.$ERROR_CODES)
+async function main() {
+  await db.user.deleteMany({})
+}
+main()

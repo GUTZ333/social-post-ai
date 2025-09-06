@@ -21,6 +21,7 @@ import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { auth } from "@/lib/auth";
 import { handleSignInGoogle } from "@/handlers/sign-in-google";
+import { Loader2 } from "lucide-react";
 
 export default function SignUpAuthForm({ className, ...props }: ComponentProps<"div">) {
 
@@ -40,7 +41,8 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
         if (signUp.success) {
           reset();
           toast.success("Sign Up sucessfully!!", {
-            description: "Your account was created now."
+            description: "Your account was created now. verify your email to start using it.",
+            duration: 4000, // 4 segundos
           })
         }
         else {
@@ -172,7 +174,7 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
               </div>
             </div>
             <Button disabled={isSubmitting} type="submit" className="w-full">
-              {isSubmitting ? "Signing Up..." : "Sign Up"}
+              {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : "Sign Up"}
             </Button>
           </div>
           <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
@@ -180,12 +182,12 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
               Or
             </span>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Button type="button" variant="outline" onClick={handleSignInGoogle} className="w-full">
-              <FaGoogle size={24} className="" />
-              Google
-            </Button>
-          </div>
+
+          <Button className="w-full" type="button" variant="outline" onClick={handleSignInGoogle}>
+            <FaGoogle size={24} className="" />
+            Google
+          </Button>
+
         </div>
       </form>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-sm text-balance *:[a]:underline *:[a]:underline-offset-4">

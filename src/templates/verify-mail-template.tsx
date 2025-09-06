@@ -1,112 +1,86 @@
-import { ReactNode } from "react";
+import * as React from 'react';
 import {
   Html,
   Head,
-  Preview,
   Body,
   Container,
   Section,
   Text,
   Button,
-  Heading,
-  Img,
-} from "@react-email/components";
+  Hr,
+  Tailwind,
+} from '@react-email/components';
 
 interface VerifyMailTemplateProps {
-  username: string;
-  link: string;
+  name?: string;
+  url?: string;
 }
 
-export default function VerifyMailTemplate({
-  username,
-  link: url,
-}: VerifyMailTemplateProps): ReactNode {
+const VerifyMailTemplate = (props: VerifyMailTemplateProps) => {
   return (
-    <Html>
-      <Head />
-      <Preview>Confirm your email to access your account 🚀</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          {/* Logo */}
-          <Section style={{ textAlign: "center", marginBottom: "30px" }}>
-            <Img
-              src="http://localhost:3000/images/social-post-ai.png"
-              width="60"
-              height="60"
-              alt="Logo"
-              style={{ margin: "0 auto" }}
-            />
-          </Section>
+    <Html lang="en" dir="ltr">
+      <Tailwind>
+        <Head />
+        <Body className="bg-gray-100 font-sans py-[40px]">
+          <Container className="bg-white rounded-[8px] shadow-sm max-w-[600px] mx-auto p-[40px]">
+            {/* Header */}
+            <Section className="text-center mb-[32px]">
+              <Text className="text-[24px] font-bold text-gray-900 m-0">
+                Verify Your Email Address
+              </Text>
+            </Section>
 
-          {/* Title */}
-          <Heading style={title}>Hi, {username} 👋</Heading>
+            {/* Main Content */}
+            <Section className="mb-[32px]">
+              <Text className="text-[16px] text-gray-700 leading-[24px] mb-[16px]">
+                Hi {props.name || 'there'},
+              </Text>
+              <Text className="text-[16px] text-gray-700 leading-[24px] mb-[16px]">
+                Thank you for signing up! To complete your registration and secure your account, please verify your email address by clicking the button below.
+              </Text>
+              <Text className="text-[16px] text-gray-700 leading-[24px] mb-[24px]">
+                This verification link will expire in 24 hours for your security.
+              </Text>
+            </Section>
 
-          {/* Message */}
-          <Text style={paragraph}>
-            We’re almost there! Click the button below to confirm your email and
-            activate your account.
-          </Text>
+            {/* Verification Button */}
+            <Section className="text-center mb-[32px]">
+              <Button
+                href={props.url || '#'}
+                className="bg-blue-600 text-white px-[32px] py-[16px] rounded-[8px] text-[16px] font-semibold no-underline box-border inline-block"
+              >
+                Verify Email Address
+              </Button>
+            </Section>
 
-          {/* Button */}
-          <Section style={{ textAlign: "center", margin: "30px 0" }}>
-            <Button style={button} href={url}>
-              Confirm my email
-            </Button>
-          </Section>
+            {/* Alternative Link */}
+            <Section className="mb-[32px]">
+              <Text className="text-[14px] text-gray-600 leading-[20px] mb-[8px]">
+                If the button doesn't work, copy and paste this link into your browser:
+              </Text>
+              <Text className="text-[14px] text-blue-600 break-all">
+                {props.url || 'https://yourapp.com/verify?token=abc123'}
+              </Text>
+            </Section>
 
-          {/* Footer */}
-          <Text style={footer}>
-            If you didn’t sign up for our app, you can safely ignore this email.
-            <br />— The Social Post AI Team
-          </Text>
-        </Container>
-      </Body>
+            <Hr className="border-gray-200 my-[24px]" />
+
+            {/* Footer */}
+            <Section>
+              <Text className="text-[12px] text-gray-500 leading-[16px] mb-[8px]">
+                If you didn't create an account with us, you can safely ignore this email.
+              </Text>
+              <Text className="text-[12px] text-gray-500 leading-[16px] m-0">
+                © 2025 Your Company Name. All rights reserved.
+                <br />
+                123 Business Street, Campinas, SP, Brazil
+              </Text>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
     </Html>
   );
-}
-
-/* 🎨 Inline styles (necessary for emails) */
-const main = {
-  backgroundColor: "#f9fafb",
-  fontFamily: "Arial, sans-serif",
 };
 
-const container = {
-  backgroundColor: "#ffffff",
-  margin: "40px auto",
-  padding: "40px",
-  borderRadius: "12px",
-  maxWidth: "500px",
-  boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
-};
-
-const title = {
-  fontSize: "24px",
-  fontWeight: "bold",
-  marginBottom: "20px",
-  textAlign: "center" as const,
-};
-
-const paragraph = {
-  fontSize: "16px",
-  lineHeight: "24px",
-  color: "#374151",
-  marginBottom: "20px",
-};
-
-const button = {
-  backgroundColor: "#4F46E5",
-  color: "#fff",
-  fontSize: "16px",
-  padding: "14px 28px",
-  borderRadius: "8px",
-  textDecoration: "none",
-  fontWeight: "bold",
-};
-
-const footer = {
-  fontSize: "12px",
-  color: "#6b7280",
-  textAlign: "center" as const,
-  marginTop: "30px",
-};
+export default VerifyMailTemplate;

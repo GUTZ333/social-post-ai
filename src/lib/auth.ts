@@ -5,15 +5,33 @@ import { nextCookies } from "better-auth/next-js";
 import * as bcryptjs from "bcryptjs";
 import { resend } from "./resend";
 import ResetPasswordTemplate from "@/templates/reset-password-template";
+import VerifyMailTemplate from "@/templates/verify-mail-template";
 
 export const auth = betterAuth({
   // Dando o acesso do Prisma ORM para o better auth fazer as automações deles no meu banco MySQL
   database: prismaAdapter(db, {
     provider: "mysql"
   }),
+  // Configurando o serviço de verificação de email
+  emailVerification: {
+    // ele será automatizacamente acionado quando o usuário se inscrever ou entrar
+    sendOnSignUp: true,
+    sendOnSignIn: true,
+    autoSignInAfterVerification: true, // após a verificação do email, ele loga o usuário automaticamente
+    // função que envia o email de verificação
+    async sendVerificationEmail({ user: { name, email }, url }) {
+      // enviando o email de verificação usando o Resend com o template react
+      await resend.emails.send({
+        from: process.env.NEXT_PUBLIC_RESEND_FROM as string,
+        to: email,
+        subject: "Verify your email",
+        react: VerifyMailTemplate({ name: name, url })
+      })
+    },
+  },
   // Configurando provedor de autenticação por credenciais
   emailAndPassword: {
-    
+    requireEmailVerification: true,
     async sendResetPassword({ url, user: { email, name } }) {
       await resend.emails.send({
         from: process.env.NEXT_PUBLIC_RESEND_FROM as string,
