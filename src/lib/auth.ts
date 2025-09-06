@@ -12,13 +12,6 @@ export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "mysql"
   }),
-  // Configurações avançadas
-  advanced: {
-    useSecureCookies: true,
-    database: {
-      generateId: false
-    },
-  },
   // Provider application name
   appName: "Social Post AI",
   // Configurando o serviço de verificação de email
