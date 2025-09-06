@@ -12,6 +12,20 @@ export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "mysql"
   }),
+  // Configurações avançadas
+  advanced: {
+    useSecureCookies: true,
+    database: {
+      generateId: false
+    },
+    cookies: {
+      session_token: {
+        attributes: {
+          httpOnly: true
+        }
+      }
+    }
+  },
   // Provider application name
   appName: "Social Post AI",
   // Configurando o serviço de verificação de email
@@ -58,8 +72,8 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
-      accessType: "offline",  
-      prompt: "select_account consent",
+      accessType: "offline",  // para pegar o refresh token e poder renovar o access token quando expirar
+      prompt: "select_account consent", // para sempre mostrar a tela de seleção de conta e o consentimento para pegar o refresh token
       scope: ["https://www.googleapis.com/auth/user.birthday.read", "email", "profile", "openid"],
       disableSignUp: false,
 
