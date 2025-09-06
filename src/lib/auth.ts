@@ -18,13 +18,6 @@ export const auth = betterAuth({
     database: {
       generateId: false
     },
-    cookies: {
-      session_token: {
-        attributes: {
-          httpOnly: true
-        }
-      }
-    }
   },
   // Provider application name
   appName: "Social Post AI",
