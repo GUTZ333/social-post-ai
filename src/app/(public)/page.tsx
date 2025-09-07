@@ -1,8 +1,9 @@
 import { Navbar } from "@/components/navbar";
-import { } from "@/components/ui/navigation-menu";
+import Section from "@/components/section";
 
 export default function LandingPage() {
-  return <main>
+  return <main className="p-3">
     <Navbar />
-  </main>
+    <Section />
+  </main>;
 }

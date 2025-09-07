@@ -22,6 +22,11 @@ import { toast } from "sonner";
 import { auth } from "@/lib/auth";
 import { handleSignInGoogle } from "@/handlers/sign-in-google";
 import { Loader2 } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign Up || Social Post AI",
+}
 
 export default function SignUpAuthForm({ className, ...props }: ComponentProps<"div">) {
 

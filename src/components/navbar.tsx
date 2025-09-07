@@ -1,70 +1,43 @@
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import Image from 'next/image';
-import SocialPostIcon from "@/images/social-post-icon.webp";
+import Image from "next/image";
+import Logo from "@/images/social-post-icon.webp"
+import { NavMenu } from "./nav-menu";
+import { Button } from "./ui/button";
+import { NavigationSheet } from "./navigation-sheet";
+import Link from "next/link";
 
 export function Navbar() {
   return (
     <>
-      <nav className="p-4 flex justify-between items-center">
-        {/* Container Esquerdo: Logo e Itens do Menu */}
-        <div className="flex items-center justify-center space-x-2">
-          {/* Logo "Launch UI" */}
-          <Image src={SocialPostIcon} alt="social post icon" width={50} />
-          <div className="font-bold text-lg">Social Post AI</div>
-
-          {/* Componente NavigationMenu precisa envolver o NavigationMenuList */}
-          <NavigationMenu>
-            <NavigationMenuList className="flex space-x-4">
-              {/* Menu "Getting started" */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  {/* ... conteúdo do dropdown ... */}
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              {/* Menu "Components" */}
-
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/about" className="font-medium">
-                  About
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/dashboard" className="font-medium">
-                  Dashboard
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-
-        {/* Container Direito: Botões */}
-        <div className="flex items-center space-x-4">
-          {/* Botão "Sign in" */}
-          <Button variant="ghost">
-            <Link href="/sign-in">
-              Sign In
-            </Link>
-          </Button>
-
-          {/* Botão "Get Started" */}
-          <Button>
-            <Link href="/sign-up">
-              Get Started
-            </Link>
-          </Button>
-        </div>
-      </nav>
+      <div className="border-b border-b-white/5">
+        <nav className="h-16 border-b">
+          <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div>
+              <Link href="/" className="flex gap-2 items-center">
+                <Image width={50} src={Logo} alt="Social Post AI" />
+                <h2 className="text-lg font-semibold hidden md:block">Social Post AI</h2>
+              </Link>
+            </div>
+            {/* Desktop Menu */}
+            <NavMenu className="hidden md:block font-semibold" />
+            <div className="flex items-center gap-3">
+              <Button variant="outline" className="hidden sm:inline-flex" asChild>
+                <Link href="/sign-in">
+                  Sign In
+                </Link>
+              </Button>
+              <Button asChild>
+                <Link href="/sign-up">
+                  Get Started
+                </Link>
+              </Button>
+              {/* Mobile Menu */}
+              <div className="md:hidden">
+                <NavigationSheet />
+              </div>
+            </div>
+          </div>
+        </nav >
+      </div >
     </>
   );
 }

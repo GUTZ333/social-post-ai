@@ -14,6 +14,11 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { handleSignInGoogle } from "@/handlers/sign-in-google";
 import { Loader2 } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign In || Social Post AI",
+}
 
 export default function SignInAuthForm({
   className,
