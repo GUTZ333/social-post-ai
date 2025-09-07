@@ -6,6 +6,9 @@ import { HTMLAttributes } from "react";
 import clsx from "clsx";
 import { Badge } from "./ui/badge";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { featuresModel } from "@/db/mongo";
+import FeatureIcon from "./features-icon";
+import { SiReacthookform } from "react-icons/si";
 
 export function ArticleWelcome({ className, ...props }: HTMLAttributes<HTMLElement>) {
   return (
@@ -42,7 +45,7 @@ export function ArticleWelcome({ className, ...props }: HTMLAttributes<HTMLEleme
   );
 }
 
-export function ArticleFeatures({ className, ...props }: HTMLAttributes<HTMLElement>) {
+export async function ArticleFeatures({ className, ...props }: HTMLAttributes<HTMLElement>) {
   return (
     <>
       <article className={clsx(className)} {...props}>
@@ -50,82 +53,24 @@ export function ArticleFeatures({ className, ...props }: HTMLAttributes<HTMLElem
           Features
         </h1>
         <div className="mt-10 *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:bg-gradient-to-t grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:shadow-xs lg:px-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Loader2 className="animate-spin h-5 w-5" /> Fast Generation
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Generate social media posts in seconds using AI technology.
-              </CardDescription>
-            </CardContent>
-            <CardFooter>
-              <CardAction>
-                <Button variant="link" className="px-0">
-                  Learn More <ArrowUpRight className="!h-4 !w-4" />
-                </Button>
-              </CardAction>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Loader2 className="animate-spin h-5 w-5" /> Fast Generation
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Generate social media posts in seconds using AI technology.
-              </CardDescription>
-            </CardContent>
-            <CardFooter>
-              <CardAction>
-                <Button variant="link" className="px-0">
-                  Learn More <ArrowUpRight className="!h-4 !w-4" />
-                </Button>
-              </CardAction>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Loader2 className="animate-spin h-5 w-5" /> Fast Generation
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Generate social media posts in seconds using AI technology.
-              </CardDescription>
-            </CardContent>
-            <CardFooter>
-              <CardAction>
-                <Button variant="link" className="px-0">
-                  Learn More <ArrowUpRight className="!h-4 !w-4" />
-                </Button>
-              </CardAction>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Loader2 className="animate-spin h-5 w-5" /> Fast Generation
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Generate social media posts in seconds using AI technology.
-              </CardDescription>
-            </CardContent>
-            <CardFooter>
-              <CardAction>
-                <Button variant="link" className="px-0">
-                  Learn More <ArrowUpRight className="!h-4 !w-4" />
-                </Button>
-              </CardAction>
-            </CardFooter>
-          </Card>
+          {Array.from({ length: 8 }).map((_, index) => (
+            <Card key={index} data-slot="card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  React Hook Form
+                </CardTitle>
+                <CardAction>
+                  <SiReacthookform />
+                </CardAction>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  React Hook Form is a library that helps you manage forms in React applications. It provides a simple and efficient way to handle form state, validation, and submission.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+
         </div>
       </article>
     </>
