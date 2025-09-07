@@ -19,8 +19,8 @@ export default function ForgotPasswordForm({ className, ...props }: ComponentPro
 
   return <div className={clsx("flex flex-col gap-6", className)} {...props} >
     <form onSubmit={handleSubmit(async ({ toMail }) => {
-      const forgotPassword = await handleForgotPassword({ toMail });
-      if (forgotPassword.success) {
+      const handle = await handleForgotPassword({ toMail });
+      if (handle.success) {
         toast.success("If your email is registered, you will receive a password reset link.", {
           description: "Please check your inbox and follow the instructions to reset your password. If you don't see the email, be sure to check your spam or junk folder.",
           duration: 3000, // 3 segundos
@@ -28,7 +28,7 @@ export default function ForgotPasswordForm({ className, ...props }: ComponentPro
       }
       else {
         toast.error("An error occurred while trying to reset the password. Please try again later.", {
-          description: forgotPassword.error,
+          description: handle.error,
           duration: 3000, // 3 segundos
         });
       }

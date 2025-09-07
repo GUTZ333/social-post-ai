@@ -30,19 +30,19 @@ export default function SignInAuthForm({
   return (
     <form noValidate onSubmit={handleSubmit(async ({ authMail, authPass }) => {
 
-      const signIn = await handleSignInAuthSubmit({
+      const handle = await handleSignInAuthSubmit({
         authMail, authPass
       });
 
-      if (signIn.success) {
+      if (handle.success) {
         toast.success("Login sucessfully!!", {
           description: "You are already logged in to the platform!",
           duration: 3000 // 3 segundos
         })
-        redirect(signIn.data.url as string)
+        redirect(handle.data.url as string)
       }
       else {
-        const { error } = signIn;
+        const { error } = handle;
         const { USER_NOT_FOUND, INVALID_EMAIL_OR_PASSWORD, INVALID_PASSWORD, INVALID_EMAIL, EMAIL_NOT_VERIFIED } = auth.$ERROR_CODES;
         toast.error("Login is failed.", {
           duration: 3000, // 3 segundos,

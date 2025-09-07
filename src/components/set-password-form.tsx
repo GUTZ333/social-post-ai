@@ -9,18 +9,28 @@ import Image from "next/image"
 import SocialPostIcon from "@/images/social-post-icon.webp"
 import { useFormResetPassword } from "@/hooks/use-form-reset-password"
 import clsx from "clsx";
+import { handleResetPassword } from "@/handlers/reset-password";
+import { toast, Toaster } from "sonner";
+import { useSearchParams } from "next/navigation";
 
 export default function ResetPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const searchParams = useSearchParams();
   const { register, handleSubmit, formState: { isSubmitting, errors } } = useFormResetPassword();
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <form onSubmit={handleSubmit(async ({ currentPass: pass }) => {
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        console.log(pass)
+      <form onSubmit={handleSubmit(async ({ currentPass }) => {
+        const token = searchParams.get("token") || "";
+        const handle = await handleResetPassword({ currentPass }, token)
+        if (handle.success) {
+          toast.success("Password successfully changed", {
+            description: "You can now sign in with your new password.",
+            duration: 3000, // 3 segundos
+          });
+        }
       })} noValidate >
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
@@ -63,6 +73,7 @@ export default function ResetPasswordForm({
         By clicking continue, you agree to our <Link href="#">Terms of Service</Link>{" "}
         and <Link href="#">Privacy Policy</Link>.
       </div>
+      <Toaster position="top-center" />
     </div>
   )
 }

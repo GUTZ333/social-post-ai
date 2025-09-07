@@ -36,14 +36,14 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
   return (
     <div className={clsx("flex flex-col gap-6", className)} {...props}>
       <form noValidate onSubmit={handleSubmit(async ({ authBirthDate, authMail, authPass, authUsername }) => {
-        const signUp = await handleSignUpAuthSubmit({
+        const handle = await handleSignUpAuthSubmit({
           authBirthDate,
           authMail,
           authPass,
           authUsername
         })
 
-        if (signUp.success) {
+        if (handle.success) {
           reset();
           toast.success("Sign Up sucessfully!!", {
             description: "Your account was created now. verify your email to start using it.",
@@ -51,7 +51,7 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
           })
         }
         else {
-          const { error } = signUp;
+          const { error } = handle;
           const { USER_ALREADY_EXISTS, ACCOUNT_NOT_FOUND } = auth.$ERROR_CODES
           toast.error("Sign Up failed.", {
             duration: 3000, // 3 segundos
