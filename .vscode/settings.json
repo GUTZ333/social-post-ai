@@ -2,6 +2,7 @@
   "conventionalCommits.scopes": [
     "forma de gancho de reação + zod",
     "Auth",
-    "Theme"
+    "Theme",
+    "Landing Page"
   ]
 }

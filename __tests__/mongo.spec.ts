@@ -1,6 +1,7 @@
-import { featuresModel } from "@/db/mongo";
-import { trpcAxios } from "@/lib/trpc-axios";
 import mongoose from "mongoose";
+import "dotenv/config";
+import { featuresModel } from "@/db/mongo";
+import { SiZod } from "react-icons/si"
 
 describe("Mongo DB.", () => {
   beforeAll(async () => {
@@ -15,8 +16,8 @@ describe("Mongo DB.", () => {
     expect(mongoose.connection.readyState).toBe(1);
   });
 
-  test("List Features", async () => {
-    const response = trpcAxios.feature_router.getFeatures.query()
-    expect(Array.isArray(response)).toBe(true)
+  test("add a new feature", async () => {
+    const feature = featuresModel.create({ feature_name: "Zod", feature_desc: "Zod is a TypeScript-first schema declaration and validation library.", feature_icon_name: "SiZod" })
+    expect(feature).resolves.toBeDefined();
   })
 });
