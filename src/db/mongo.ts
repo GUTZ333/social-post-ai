@@ -3,4 +3,4 @@ import { model } from "mongoose";
 
 const featuresModel = model("features", featureMongoSchema);
 
-export { featuresModel, };
+export { featuresModel };
