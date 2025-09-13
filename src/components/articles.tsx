@@ -13,15 +13,15 @@ export function ArticleWelcome({ className, ...props }: HTMLAttributes<HTMLEleme
   return (
     <>
       <article className={clsx(className)} {...props}>
-        <div className="max-w-screen-xl w-full mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
+        <div className="max-w-(--breakpoint-xl) w-full mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
           <div>
             <Badge>
               Post Master
             </Badge>
-            <h1 className="mt-6 text-center text-4xl md:text-5xl lg:text-[2.75rem] xl:text-5xl font-bold !leading-[1.2]">
+            <h1 className="mt-6 max-w-[17ch] text-4xl md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem] font-semibold leading-[1.2]! tracking-tighter">
               Social Post AI
             </h1>
-            <p className="mt-6 text-center text-lg">
+            <p className="mt-6 max-w-[60ch] sm:text-lg">
               Welcome to Social Post Ai, an Artificial Intelligence that generates content and posts for social media profiles, focused on people who want to succeed in social networks in their content production jobs.
             </p>
             <div className="mt-12 flex items-center gap-4">

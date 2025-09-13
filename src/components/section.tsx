@@ -1,10 +1,12 @@
+import { HtmlHTMLAttributes } from "react";
 import { ArticleFeatures, ArticleWelcome } from "./articles";
+import clsx from "clsx";
 
-export default function Section() {
+export default function Section({ className, ...props } : HtmlHTMLAttributes<HTMLElement>) {
   return (
-    <section className="w-full min-h-screen flex flex-col items-center">
-      <ArticleWelcome className="flex items-center justify-center mt-10" />
-      <ArticleFeatures />
+    <section className={clsx(className)} {...props}>
+      <ArticleWelcome className="min-h-screen flex items-center justify-center mt-40" />
+      <ArticleFeatures className="mt-20"/>
     </section>
   );
 }
