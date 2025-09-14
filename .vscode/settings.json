@@ -4,6 +4,7 @@
     "Auth",
     "Theme",
     "Landing Page",
-    "features"
+    "features",
+    "TRPC"
   ]
 }

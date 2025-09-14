@@ -1,12 +1,12 @@
 import { publicProcedure, router } from './trpc';
 
-const appRouter = router({
+export const appRouter = router({
   helloWorld: publicProcedure
-  .query(async () => {
-    return "Hello World"
-  })
+    .query(() => {
+      return "Hello World"
+    })
 });
 
 // Export type router type signature,
 // NOT the router itself.
-export type AppRouter = typeof appRouter;
+export type typeAppRouter = typeof appRouter;
