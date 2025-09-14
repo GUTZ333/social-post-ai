@@ -7,19 +7,19 @@ import Icon from "@/images/social-post-icon.webp"
 const footerLinks = [
   {
     title: "About",
-    href: "#",
+    href: "/about",
   },
   {
     title: "Dashboard",
-    href: "#",
+    href: "/dashboard",
   },
   {
     title: "Terms",
-    href: "#",
+    href: "/terms",
   },
   {
     title: "Contact Us",
-    href: "#",
+    href: "/contact",
   },
 ];
 
@@ -57,16 +57,16 @@ const Footer = () => {
             </span>
 
             <div className="flex items-center gap-5 text-muted-foreground">
-              <Link href="#" target="_blank">
+              <Link href="https://github.com/GUTZ333" target="_blank">
                 <SiGithub size={20}/>
               </Link>
-              <Link href="#" target="_blank">
+              <Link href="https://www.tiktok.com/@gutz333?lang=en" target="_blank">
                 <SiTiktok size={20} />
               </Link>
-              <Link href="#" target="_blank">
+              <Link href="https://www.youtube.com/@GUTZ333" target="_blank">
                 <SiYoutube size={20} />
               </Link>
-              <Link href="#" target="_blank">
+              <Link href="https://www.instagram.com/lpsking32" target="_blank">
                 <SiInstagram size={20} />
               </Link>
             </div>

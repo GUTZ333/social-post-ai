@@ -6,7 +6,7 @@ import clsx from "clsx";
 export default function LandingPage() {
   return <main className="p-2">
     <Navbar />
-    <Section className={clsx("w-full min-h-screen flex flex-col items-center mb-10")} />
+    <Section className={clsx("w-full min-h-screen flex flex-col items-center p-2")} />
     <Footer />
   </main>;
 }
