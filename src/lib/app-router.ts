@@ -1,6 +1,7 @@
 import { procedure, router } from './trpc';
 import { featuresModel } from '@/db/mongo';
 import { FeatureZodSchema } from '@/schemas/feature-schema';
+import mongoose from 'mongoose';
 
 export const appRouter = router({
   helloWorld: procedure
@@ -10,6 +11,7 @@ export const appRouter = router({
   features: procedure
   .output(FeatureZodSchema.array())
   .query(async () => {
+    await mongoose.connect(process.env.DATABASE_MONGO_URL as string)
     return await featuresModel.find()
   })
 });

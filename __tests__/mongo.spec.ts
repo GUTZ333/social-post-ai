@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import "dotenv/config";
-import { featuresModel } from "@/db/mongo";
 import { caller } from "@/lib/trpc-caller";
 
 describe("Mongo DB.", () => {
