@@ -1,5 +1,5 @@
 import { MiddlewareConfig, NextRequest, NextResponse as response } from "next/server";
-import { routesPublic } from "./routes/public/routes-public";
+import { routesPublic } from "./lib/routes-public";
 import { getSessionCookie } from "better-auth/cookies"
 
 export function middleware(request: NextRequest) {
