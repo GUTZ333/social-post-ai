@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import "dotenv/config";
 import { featuresModel } from "@/db/mongo";
+import { caller } from "@/lib/trpc-caller";
 
 describe("Mongo DB.", () => {
   beforeAll(async () => {
@@ -15,8 +16,8 @@ describe("Mongo DB.", () => {
     expect(mongoose.connection.readyState).toBe(1);
   });
 
-  test("add a new feature", async () => {
-    const feature = await featuresModel.create({ feature_name: "React Hook Form", feature_desc: "React Hook Form is a library for managing form state in React applications.", feature_icon_name: "SiReacthookform" });
-    expect(feature).toBeDefined();
-  });
+  test("Features of the aplication in TRPC procedure", async () => {
+    const result = await caller.features()
+    expect(Array.isArray(result)).toBe(true)
+  }, 10000)
 });

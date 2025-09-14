@@ -1,10 +1,17 @@
-import { publicProcedure, router } from './trpc';
+import { procedure, router } from './trpc';
+import { featuresModel } from '@/db/mongo';
+import { FeatureZodSchema } from '@/schemas/feature-schema';
 
 export const appRouter = router({
-  helloWorld: publicProcedure
+  helloWorld: procedure
     .query(() => {
       return "Hello World"
-    })
+    }),
+  features: procedure
+  .output(FeatureZodSchema.array())
+  .query(async () => {
+    return await featuresModel.find()
+  })
 });
 
 // Export type router type signature,

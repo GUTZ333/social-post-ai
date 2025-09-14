@@ -11,5 +11,3 @@ export const trpc = createTRPCClient<typeAppRouter>({
     }),
   ],
 });
-
-export const caller = appRouter.createCaller({})
