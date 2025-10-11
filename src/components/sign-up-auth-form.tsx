@@ -8,15 +8,9 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import SocialPostIcon from "@/app/favicon.ico";
 import Image from "next/image";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { ChevronDownIcon } from "lucide-react";
-import { Calendar } from "./ui/calendar";
 import { useFormSignUpAuth } from "@/hooks/use-form-sign-up-auth";
 import { handleSignUpAuthSubmit } from "@/handlers/sign-up-auth-submit";
-import { Controller } from "react-hook-form";
-import { format } from "date-fns";
-import { enUS } from "date-fns/locale";
-import { FaGoogle, FaInstagram } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { auth } from "@/lib/auth";
@@ -35,9 +29,8 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
 
   return (
     <div className={clsx("flex flex-col gap-6", className)} {...props}>
-      <form noValidate onSubmit={handleSubmit(async ({ authBirthDate, authMail, authPass, authUsername }) => {
+      <form noValidate onSubmit={handleSubmit(async ({ authMail, authPass, authUsername }) => {
         const handle = await handleSignUpAuthSubmit({
-          authBirthDate,
           authMail,
           authPass,
           authUsername
@@ -144,36 +137,6 @@ export default function SignUpAuthForm({ className, ...props }: ComponentProps<"
                 {errors.authPass && (
                   <span className="text-destructive text-sm">
                     {errors.authPass.message}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="grid gap-3 mb-5">
-              <Label htmlFor="authBirthdate" className="px-1">Birth Date</Label>
-              <div className="flex flex-col gap-1">
-                <Controller name="authBirthDate" control={control} render={({ field: { value, onChange } }) => (
-                  <Popover open={openPopover} onOpenChange={setOpenPopover}>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" id="date" className={clsx("justify-between font-normal ", errors.authBirthDate && "shadow-lg shadow-red-500/50 border border-red-500 focus-visible:ring-0  drop-shadow-lg p-4 bg-white rounded-lg")}>
-                        {value ? (
-                          format(value, "PPP", { locale: enUS })
-                        ) : (
-                          <span>Select Date</span>
-                        )}
-                        <ChevronDownIcon />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <Calendar mode="single" captionLayout="dropdown" selected={value} onSelect={(date) => {
-                        onChange(date);
-                        setOpenPopover(false);
-                      }} initialFocus locale={enUS} />
-                    </PopoverContent>
-                  </Popover>
-                )} />
-                {errors.authBirthDate && (
-                  <span className="text-destructive text-sm">
-                    {errors.authBirthDate.message}
                   </span>
                 )}
               </div>

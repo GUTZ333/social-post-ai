@@ -60,7 +60,7 @@ export const auth = betterAuth({
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
       accessType: "offline",  // para pegar o refresh token e poder renovar o access token quando expirar
       prompt: "select_account consent", // para sempre mostrar a tela de seleção de conta e o consentimento para pegar o refresh token
-      scope: ["https://www.googleapis.com/auth/user.birthday.read", "email", "profile", "openid"],
+      scope: ["email", "profile", "openid"],
       disableSignUp: false,
 
       async mapProfileToUser({ picture, name, email, email_verified, }) {
@@ -79,17 +79,6 @@ export const auth = betterAuth({
 
   // Plugins que iram fazer parte da aplicação
   plugins: [nextCookies()], // Next Cookies
-
-  // dizendo que a data de nascimento fará parte do cadastro dentro do usuário
-  user: {
-    additionalFields: {
-      birth_date: {
-        type: "date",
-        required: true,
-        input: true
-      }
-    }
-  },
   session: {
     expiresIn: 60 * 60 * 24 * 30, // 30 days
     disableSessionRefresh: false, // se true, a sessão não será renovada automaticamente

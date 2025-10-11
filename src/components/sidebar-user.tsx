@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
 import { Skeleton } from "./ui/skeleton";
 import { useTheme } from "next-themes";
+import { handleSignOut } from "@/handlers/sign-out";
 
 export function SidebarUser() {
   const { isMobile } = useSidebar()
@@ -64,7 +65,7 @@ export function SidebarUser() {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSignOut}>
             <LogOut />
             Log out
           </DropdownMenuItem>
