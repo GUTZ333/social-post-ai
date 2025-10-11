@@ -9,16 +9,16 @@ datasource db {
 }
 
 model User {
-  id            String      @id
-  name          String      @db.Text
+  id            String    @id
+  name          String    @db.Text
   email         String
   emailVerified Boolean
-  image         String?     @db.Text
+  image         String?   @db.Text
   createdAt     DateTime
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
-  workspaces    Chat[]
+  chat          Chat[]
 
   @@unique([email])
   @@map("user")
@@ -70,23 +70,20 @@ model Verification {
 }
 
 model Chat {
-  id        String    @id @default(uuid())
-  userId    String
-  name      String
+  id        String    @id @default(cuid())
+  title     String
   createdAt DateTime  @default(now())
-  updateAt  DateTime  @updatedAt
+  updatedAt DateTime  @updatedAt
+  userId    String
   user      User      @relation(fields: [userId], references: [id])
-  Content   Content[]
-
-  @@map("chats")
+  messages  Message[]
 }
 
-model Content {
-  id          String    @id @default(uuid())
-  input       String
-  output      String
-  workspaceId String
-  workspace   Chat @relation(fields: [workspaceId], references: [id])
-
-  @@map("contents")
+model Message {
+  id        String   @id @default(cuid())
+  role      String // "user" ou "assistant"
+  content   String
+  createdAt DateTime @default(now())
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id])
 }
