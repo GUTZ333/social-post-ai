@@ -7,31 +7,38 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./u
 import { Skeleton } from "./ui/skeleton";
 import { useTheme } from "next-themes";
 import { handleSignOut } from "@/handlers/sign-out";
+import { authClient } from "@/lib/auth-client";
 
 export function SidebarUser() {
+  const { useSession } = authClient;
+  const { data: session } = useSession();
+
+  const username = session?.user.name;
+  const email = session?.user.email;
+
   const { isMobile } = useSidebar()
   const { theme, setTheme } = useTheme()
 
   return <SidebarMenu>
     <SidebarMenuItem>
       <DropdownMenu>
-        <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-          <Avatar className="w-8 h-8 rounded-full">
-            <AvatarImage src="https://github.com/GUTZ333.png" />
-            <AvatarFallback className="bg-muted rounded-full">
-              <Skeleton className="w-8 h-8" />
-            </AvatarFallback>
-          </Avatar>
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">GUTZ333</span>
-            <span className="text-muted-foreground truncate text-xs">
-              gutz@example.com
-            </span>
-          </div>
-          <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+            <Avatar className="w-8 h-8 rounded-full">
+              <AvatarImage src="https://github.com/GUTZ333.png" />
+              <AvatarFallback className="bg-muted rounded-full">
+                <Skeleton className="w-8 h-8" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-medium">{username}</span>
+              <span className="text-muted-foreground truncate text-xs">
+                {email}
+              </span>
+            </div>
             <MoreVertical className="ml-auto size-4" />
-          </DropdownMenuTrigger>
-        </SidebarMenuButton>
+          </SidebarMenuButton>
+        </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
           side={isMobile ? "bottom" : "right"}
@@ -46,9 +53,9 @@ export function SidebarUser() {
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">GUTZ 333</span>
+                <span className="truncate font-medium">{username}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  gutz@example.com
+                  {email}
                 </span>
               </div>
             </div>
