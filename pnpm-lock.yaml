@@ -137,6 +137,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      pinata:
+        specifier: ^2.5.1
+        version: 2.5.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -158,6 +161,9 @@ importers:
       resend:
         specifier: ^6.0.1
         version: 6.0.1(@react-email/render@1.2.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -5060,6 +5066,18 @@ packages:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
     engines: {node: '>=12'}
 
+  pinata@2.5.1:
+    resolution: {integrity: sha512-AyQIlgeD1uI3C/qjqBOare5kj9J4O/x85hkDckPiB13RY2Fem4bvkMOLQsLWSv79xlkVeLAx15PO7slGItiClQ==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   pirates@4.0.7:
     resolution: {integrity: sha512-TfySrs/5nm8fQJDcBDuUng3VOUKsd7S+zqvbOTiGXHfxX4wK31ard+hoNuvkicM/2YFzlpDgABOevKSsB4G/FA==}
     engines: {node: '>= 6'}
@@ -5415,6 +5433,9 @@ packages:
     resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
     engines: {node: '>=10'}
     hasBin: true
+
+  server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
 
   set-cookie-parser@2.7.1:
     resolution: {integrity: sha512-IOc8uWeOZgnb3ptbCURJWNjWUPcO3ZnTTdzsurqERrP6nPyv+paC55vJM0LpOlT2ne+Ix+9+CRG1MNLlyZ4GjQ==}
@@ -11817,6 +11838,11 @@ snapshots:
 
   picomatch@4.0.3: {}
 
+  pinata@2.5.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    optionalDependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+
   pirates@4.0.7: {}
 
   pkg-dir@4.2.0:
@@ -12235,6 +12261,8 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.7.2: {}
+
+  server-only@0.0.1: {}
 
   set-cookie-parser@2.7.1: {}
 
