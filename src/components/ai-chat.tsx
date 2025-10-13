@@ -6,15 +6,21 @@ import { Source, Sources, SourcesContent, SourcesTrigger } from "./ai-elements/s
 import { Message, MessageContent } from "./ai-elements/message"
 import { Response } from "./ai-elements/response"
 import { Reasoning, ReasoningContent, ReasoningTrigger } from "./ai-elements/reasoning"
-import { GlobeIcon, Loader } from "lucide-react"
+import { Bot, BotIcon, GlobeIcon, Loader, User } from "lucide-react"
 import { PromptInput, PromptInputButton, PromptInputMessage, PromptInputSubmit, PromptInputTextarea, PromptInputToolbar, PromptInputTools } from "./ai-elements/prompt-input"
 import { FormEvent, useState } from "react"
+import { authClient } from "@/lib/auth-client"
+import Image from "next/image"
 
 export function AIChat() {
   const { messages, sendMessage, status } = useAIChat();
   const [inputText, setInputText] = useState<string>("");
 
-  function handleSubmit(message: PromptInputMessage, e: FormEvent) {
+  const { useSession } = authClient
+  const { data: session } = useSession()
+  const image = session?.user.image
+
+  function handleSubmit(_: PromptInputMessage, e: FormEvent) {
     e.preventDefault();
     sendMessage(
       {
@@ -59,31 +65,39 @@ export function AIChat() {
                   </Sources>
                 )}
                 <Message from={message.role} key={message.id}>
-                  <MessageContent>
-                    {message.parts.map((part, i) => {
-                      switch (part.type) {
-                        case "text":
-                          return (
-                            <Response key={`${message.id}-${i}`}>
-                              {part.text}
-                            </Response>
-                          );
-                        case "reasoning":
-                          return (
-                            <Reasoning
-                              key={`${message.id}-${i}`}
-                              className="w-full"
-                              isStreaming={status === "streaming"}
-                            >
-                              <ReasoningTrigger />
-                              <ReasoningContent>{part.text}</ReasoningContent>
-                            </Reasoning>
-                          );
-                        default:
-                          return null;
-                      }
-                    })}
-                  </MessageContent>
+                  <div className="flex items-start gap-2">
+                    {/* Ícone do remetente à esquerda, sempre alinhado ao topo da mensagem */}
+                    <div className="flex-shrink-0 p-2 rounded-full bg-muted">
+                      {message.role === "assistant" ? (
+                        <BotIcon className="w-5 h-5 text-blue-500" />
+                      ) : (
+                        image ? <Image src={image} alt={image} /> : <User className="w-5 h-5 text-green-500" />
+                      )}
+                    </div>
+
+                    {/* Conteúdo da mensagem */}
+                    <MessageContent className="flex-1">
+                      {message.parts.map((part, i) => {
+                        switch (part.type) {
+                          case "text":
+                            return <Response key={`${message.id}-${i}`}>{part.text}</Response>;
+                          case "reasoning":
+                            return (
+                              <Reasoning
+                                key={`${message.id}-${i}`}
+                                className="w-full"
+                                isStreaming={status === "streaming"}
+                              >
+                                <ReasoningTrigger />
+                                <ReasoningContent>{part.text}</ReasoningContent>
+                              </Reasoning>
+                            );
+                          default:
+                            return null;
+                        }
+                      })}
+                    </MessageContent>
+                  </div>
                 </Message>
               </div>
             ))}
@@ -95,9 +109,9 @@ export function AIChat() {
           <PromptInputTextarea value={inputText} onChange={(e) => setInputText(e.target.value)} />
           <PromptInputToolbar>
             <PromptInputTools>
-              
+
             </PromptInputTools>
-            <PromptInputSubmit disabled={!inputText} status={status}/>
+            <PromptInputSubmit disabled={!inputText} status={status} />
           </PromptInputToolbar>
         </PromptInput>
       </div>
