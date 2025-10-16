@@ -1,4 +1,3 @@
-import zodSchema from "@zodyac/zod-mongoose";
 import { z } from "zod";
 
 export const FeatureZodSchema = z.object({
@@ -16,5 +15,3 @@ export const FeatureDocumentZodSchema = FeatureZodSchema.extend({
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });
-
-export const featureMongoSchema = zodSchema(FeatureZodSchema)

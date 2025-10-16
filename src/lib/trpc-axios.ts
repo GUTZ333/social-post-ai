@@ -1,5 +1,5 @@
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
-import { appRouter, type typeAppRouter } from './app-router';
+import { type typeAppRouter } from './app-router';
 //     👆 **type-only** import
 
 // Pass AppRouter as generic here. 👇 This lets the `trpc` object know
@@ -7,7 +7,7 @@ import { appRouter, type typeAppRouter } from './app-router';
 export const trpc = createTRPCClient<typeAppRouter>({
   links: [
     httpBatchLink({
-      url: process.env.NEXT_URL as string,
+      url: `${process.env.NEXT_PUBLIC_NEXT_URL!}/api/trpc`,
     }),
   ],
 });

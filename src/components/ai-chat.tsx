@@ -9,16 +9,10 @@ import { Reasoning, ReasoningContent, ReasoningTrigger } from "./ai-elements/rea
 import { BotIcon, Loader, User } from "lucide-react"
 import { PromptInput, PromptInputMessage, PromptInputSubmit, PromptInputTextarea, PromptInputToolbar, PromptInputTools } from "./ai-elements/prompt-input"
 import { FormEvent, useState } from "react"
-import { authClient } from "@/lib/auth-client"
-import Image from "next/image"
 
 export function AIChat() {
   const { messages, sendMessage, status } = useAIChat();
   const [inputText, setInputText] = useState<string>("");
-
-  const { useSession } = authClient
-  const { data: session } = useSession()
-  const image = session?.user.image
 
   function handleSubmit(_: PromptInputMessage, e: FormEvent) {
     e.preventDefault();
@@ -71,7 +65,7 @@ export function AIChat() {
                       {message.role === "assistant" ? (
                         <BotIcon className="w-5 h-5 text-blue-500" />
                       ) : (
-                        image ? <Image src={image} alt={image} /> : <User className="w-5 h-5 text-green-500" />
+                        <User className="w-5 h-5 text-green-500" />
                       )}
                     </div>
 

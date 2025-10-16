@@ -15,7 +15,7 @@ export function AppSidebar({ ...props } : React.ComponentProps<typeof Sidebar>) 
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <Link href="/" className="flex items-center">
+              <Link href="/dashboard" className="flex items-center">
                 <Image src={Icon} alt="Social Post AI" width={35} height={35} />
                 <span className="text-base font-semibold">Social Post AI</span>
               </Link>

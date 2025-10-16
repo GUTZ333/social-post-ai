@@ -4,9 +4,10 @@ import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { AuthUIProvider } from "@daveyplate/better-auth-ui"
+import { AuthUIProvider } from "@daveyplate/better-auth-ui";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { trpc } from "@/lib/trpc-axios";
 
 function NextThemeProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -36,17 +37,19 @@ function BetterAuthUiProvider({ children }: { children: ReactNode }) {
     Link={Link}
     avatar={{
       async upload(file: File) {
-        const formData = new FormData()
-        formData.append("avatar", file)
-        const response = await fetch(`${process.env.NEXT_PUBLIC_NEXT_URL}/api/files`, {
-          method: "POST",
-          body: formData,
+        const buffer = await file.arrayBuffer()
+        const base64 = Buffer.from(buffer).toString("base64")
+
+        const url = await trpc.uploadImage.mutate({
+          fileName: file.name,
+          fileBase64: base64,
+          fileType: file.type
         })
-        const { url } = await response.json()
+
         return url
       },
     }}
-    
+
   >{children}</AuthUIProvider>
 }
 
