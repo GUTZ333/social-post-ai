@@ -1,5 +1,4 @@
 import { PinataSDK } from "pinata"
-import "server-only"
 
 export const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_SECRET_JWT,

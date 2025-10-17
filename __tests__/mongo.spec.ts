@@ -1,22 +1,21 @@
-import mongoose from "mongoose";
-import "dotenv/config";
-import { caller } from "@/lib/trpc-caller";
+import { mongo } from "@/lib/mongo";
 
-describe("Mongo DB.", () => {
+describe("Mongo DB", () => {
+  test("connection successfully", async () => {
+    await expect(mongo.$connect()).resolves.toBeUndefined()
+  })
+
+  test("add a new dependencie", async () => {
+    const newDependencie = await mongo.dependencies.create({
+      data: {
+        name: "Zod",
+        description: "Zod is a TypeScript-first schema validation library. It's used to define the expected structure and types of data (schemas) and validate that data at runtime, ensuring type safety and correctness for inputs like API responses or forms. It also automatically infers TypeScript types from the schemas."
+      }
+    })
+    await expect(newDependencie).resolves.toBeDefined()
+  })
+
   beforeAll(async () => {
-    await mongoose.connect(process.env.DATABASE_MONGO_URL as string);
-  }, 3000);
-
-  afterAll(async () => {
-    await mongoose.disconnect();
-  });
-
-  test("connection successfully!!", () => {
-    expect(mongoose.connection.readyState).toBe(1);
-  });
-
-  test("Features of the aplication in TRPC procedure", async () => {
-    const result = await caller.features()
-    expect(Array.isArray(result)).toBe(true)
-  }, 10000)
-});
+    await mongo.$disconnect()
+  })
+})

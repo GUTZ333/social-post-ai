@@ -1,8 +1,15 @@
-import { router } from '../lib/trpc';
+import { z } from 'zod';
+import { procedure, router } from '../lib/trpc';
 import { dependenciesRouter } from './dependencies-router';
 import { pinataRouter } from './pinata-router';
 
 export const appRouter = router({
+  helloWorld: procedure
+    .input(z.string())
+    .output(z.string())
+    .query(({ input }) => {
+      return input
+    }),
   pinataRouter,
   dependenciesRouter
 });
