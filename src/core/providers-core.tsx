@@ -37,6 +37,8 @@ function BetterAuthUiProvider({ children }: { children: ReactNode }) {
     Link={Link}
     avatar={{
       async upload(file: File) {
+        // converte o arquivo em um array de buffer(representação binária de arquivo)
+        // convertendo este ArrayBuffer em uma string de Base64 compatível com formato JSON INPUT
         const buffer = await file.arrayBuffer()
         const base64 = Buffer.from(buffer).toString("base64")
 

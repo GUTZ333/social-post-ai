@@ -18,8 +18,11 @@ export const appRouter = router({
     .output(z.string().nullable().optional())
     .mutation(async ({ input: { fileBase64, fileName, fileType } }) => {
       try {
+        // convertendo o formato de texto 64 em uma representação binária
         const buffer = Buffer.from(fileBase64, "base64")
 
+        // Cria um FormData para simular o envio de um arquivo via formulário
+        // adicionando o arquivo ao FormData, criando um objeto de dados binário em relação ao buffer convertido
         const formData = new FormData();
         formData.append("avatar", new Blob([buffer], { type: fileType }), fileName);
 
