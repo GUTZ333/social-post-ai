@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma/client-mongo"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_MONGO_URL")
+}
+
+model Dependencies {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  description String
+
+  @@map("dependencies")
+}
