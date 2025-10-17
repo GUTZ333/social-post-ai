@@ -42,7 +42,7 @@ function BetterAuthUiProvider({ children }: { children: ReactNode }) {
         const buffer = await file.arrayBuffer()
         const base64 = Buffer.from(buffer).toString("base64")
 
-        const url = await trpc.uploadImage.mutate({
+        const url = await trpc.pinataRouter.uploadImage.mutate({
           fileName: file.name,
           fileBase64: base64,
           fileType: file.type
@@ -50,6 +50,13 @@ function BetterAuthUiProvider({ children }: { children: ReactNode }) {
 
         return url
       },
+      async delete(url) {
+        // pegando parte da url da imagem do avatar que está para ser deletado
+        const urlParts = url.split("/")
+        const cid = urlParts.pop() as string
+        if (!cid) return 
+        await trpc.pinataRouter.unpinImage.mutate({cid})
+      },      
     }}
 
   >{children}</AuthUIProvider>
